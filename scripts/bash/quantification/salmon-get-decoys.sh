@@ -1,0 +1,1 @@
+/u/davidm/Documents/Memoire/Scripts//RNA-seq/bash/quantification/salmon-get-decoys.sh
