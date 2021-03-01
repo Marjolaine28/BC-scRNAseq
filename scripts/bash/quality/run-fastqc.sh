@@ -35,8 +35,6 @@ Script    $(basename $0)    must be run with a :
         exit 0
 fi
 
-
-
 #######  ARGUMENTS #######
 
 while [[ $# -gt 0 ]];
@@ -46,11 +44,13 @@ do
     case "$opt" in       
         -i) input_r1="$1"; shift;;            
         -o) output_folder="$1"; shift;;
-        -p) salmon="$1"; shift;;
+        -p) fastqc="$1"; shift;;
+		-l) lib="$1"; shift;;
         -args) args="$1"; IFS=' ' declare -a 'args=($args)'; shift;;
         -emp) emp="$1"; shift;; 
     esac
 done
+
 
 
 ####### EMPTY MODE TO ONLY CREATE EMPTY OUTPUT FILES AND FOLDERS -- useful for qsub-all-fastq.sh #######
@@ -64,12 +64,13 @@ then
 fi
 
 
-####### IF A PATH TO SALMON IS SET WITH -P, ADD IT TO $PATH #######
+####### IF A PATH TO FASTQC IS SET WITH -P, ADD IT TO $PATH #######
 
-if [[ -n $salmon ]] || [[ $salmon != 'def' ]]
+if [[ -n $fastqc ]] || [[ $fastqc != 'def' ]]
 then
-    export PATH="$PATH:$salmon/bin"
+    export PATH="$PATH:$fastqc"
 fi
+
 
 
 ####### CREATE LOG FILE FOR THIS SCRIPT #######
@@ -80,34 +81,50 @@ mkdir -p $output_folder/$sname/logs/						                                      
 log_file=$output_folder/$sname/logs/$(basename $0)_log.txt
 touch $log_file
 
+
 echo "$(date)
 
-################################################################
-########### Alevin quantification of scRNA-seq reads ###########
-################################################################
+###################################################################
+############## Get fastQC sequencing quality report ###############
+###################################################################
 
-Salmon version : $(salmon --v)
+FastQC version : fastqc --v
 
 
-Run script    $(basename $0)    with args :
+Run script    $0    with args :
 
 -i : $input_r1
 -o : $output_folder
--p  $salmon
+-p : $fastqc
+-l : $lib
 -args : ${args[@]}
 
 
-(see also salmon log file in $output_folder/$sname/logs)" >> $log_file
 
 
 
 
 
-####### RUN ALEVIN #######
+" >> $log_file
 
-input_r2=${input_r1/1.fastq/2.fastq}  	     			 ### get reads 2 files       
-salmon alevin ${args[@]} -1 $input_r1 -2 $input_r2 -o $output_folder/$sname/
 
+
+
+####### RUN FASTQC #######
+
+if [[ $lib = PE ]]
+	then
+		input_r2=${input_r1/1.fastq/2.fastq}
+		fastqc $input_r1 --outdir=$output_folder/${sname}/quality
+		fastqc $input_r2 --outdir=$output_folder/${sname}/quality
+elif [[ $lib = SE ]]
+	then
+		fastqc $input_r1 --outdir=$output_folder/${sname}/quality  
+else
+	echo "
+
+	ERROR : seq parameter $lib is not valid. Can be either PE or SE." >> $log_file
+fi
 
 echo "
 
