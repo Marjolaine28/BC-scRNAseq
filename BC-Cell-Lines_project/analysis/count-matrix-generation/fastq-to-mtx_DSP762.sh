@@ -1,7 +1,7 @@
 #!/bin/bash
 
-project_path=$1
-scripts_path=${2:-"$scripts/RNA-seq/bash/utils"}
+project_path=${1:-"../.."}
+scripts_path=${2:-"../../../scripts/"}
 
 source ~/.bash_profile
 
