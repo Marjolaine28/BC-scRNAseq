@@ -112,6 +112,8 @@ Run script    $0    with args :
 
 ####### RUN FASTQC #######
 
+mkdir -p $output_folder/${sname}/quality
+
 if [[ $lib = PE ]]
 	then
 		input_r2=${input_r1/1.fastq/2.fastq}

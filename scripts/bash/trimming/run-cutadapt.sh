@@ -129,10 +129,10 @@ Run script    $(basename $0)    with args :
 if [[ $lib = 'PE' ]]
         then			
 		input_r2=${input_r1/1.fastq/2.fastq} 
-                cutadapt ${other_params[@]} -o $output_path/$sname/trimmed-$(basename $input_r1) -p $output_path/$sname/trimmed-$(basename $input_r2) $input_r1 $input_r2
+                cutadapt ${args[@]} -o $output_path/$sname/trimmed-$(basename $input_r1) -p $output_path/$sname/trimmed-$(basename $input_r2) $input_r1 $input_r2
 elif [[ $lib = 'SE' ]]
         then
-                cutadapt ${other_params[@]} -o $output_path/$sname/trimmed-$(basename $input_r1) $input_r1
+                cutadapt ${args[@]} -o $output_path/$sname/trimmed-$(basename $input_r1) $input_r1
 else
         echo "
 

@@ -47,5 +47,5 @@ done
 mkdir -p $output_folder
 
 grep "^>" <(zcat $reference_genome) | cut -d " " -f 1 > $output_folder/decoys.txt
-sed -i -e 's/>//g' $decoys_out
+sed -i -e 's/>//g' $output_folder/decoys.txt
 cat $reference_transcriptome $reference_genome > $output_folder/gentrome.fa.gz

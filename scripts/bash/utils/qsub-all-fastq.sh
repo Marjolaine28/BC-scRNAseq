@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source ~/.bash_profile
 module load torque
 
 if [[ $1 = '--help' ]]
@@ -24,6 +23,8 @@ Script    $(basename $0)    must be run with args :
 -h : n when the job must wait for the n-th previous task to complete (hold status), else 0
 
 -r : script to submit with qsub, e.g. run-cutadapt.sh
+
+-p : path to the pipeline called in the script, e.g. /home/arion/davidm/Sofwares/cutadapt/cutadapt-3.2
 
 -i : input_path = path to the data to process, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/raw
 
@@ -53,7 +54,7 @@ do
         -w) walltime="$1"; shift;;        
         -m) mem="$1"; shift;;            
         -h) hold="$1"; shift;;
-	-r) run="$1"; shift;;  
+	-r) run_path="$1"; shift;;  
         -p) pipeline="$1"; shift;;         
         -i) input_path="$1"; shift;;            
         -o) output_path="$1"; shift;;
@@ -113,7 +114,8 @@ Run script    $(basename $0)    with args :
 -w : $walltime
 -m: $mem
 -h : $hold
--r : $run
+-r : $run_path
+-p : $pipeline
 -i : $input_path
 -o : $output_path
 -l : $lib
@@ -134,13 +136,10 @@ Run script    $(basename $0)    with args :
 
 
 
-####### FIND THE SCRIPT THAT WILL BE GIVEN TO QSUB -- no need to precise entire path for the parameter script #######
-
-run_path=$(find $scripts -name $run) #scripts is a bashrc variable : path to all scripts
-
-
-
 ####### SUBMIT JOBS #######
+
+run=$(basename $run_path) 
+
 
 if [[ $hold != 0 ]]
 then
