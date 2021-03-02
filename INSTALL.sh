@@ -43,8 +43,3 @@ then
 else
     echo "References already available."
 fi
-
-
-############################## MAKE ALL SCRIPTS EXECUTABLE ##############################
-
-chmod u+x $(find $(git root) -name '*.sh')
