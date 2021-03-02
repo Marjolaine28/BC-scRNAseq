@@ -4,4 +4,4 @@ If you have a compute cluster with torque installed, you can use qsub by running
 
 
 
-nohup bash analysis/count-matrix-generation/fastq-to-mtx_DSP762.sh &> analysis/count-matrix-generation/nohup_fastq-to-mtx.out
+nohup ./fastq-to-mtx_DSP762.sh &> ./nohup_fastq-to-mtx.out < /dev/null &
