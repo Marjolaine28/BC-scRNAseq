@@ -132,5 +132,5 @@ do
         sname=${sname[*]: -2:1}                                                                                                 ### get sample name
         mkdir -p $output_path/$sname/logs/						                                                                ### create log folder 
         # find  $output_path/$sname/ -mindepth 1 -maxdepth 1 -name '*fastq*' -exec rm -r 2>/dev/null "{}" \;	                ### remove existing results
-        bash $run_path -i $s -o $output_path -p $pipeline -args "$args" -l $lib
+        $run_path -i $s -o $output_path -p $pipeline -args "$args" -l $lib
 done
