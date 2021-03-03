@@ -18,5 +18,9 @@ Nohup allows you to prevent commands from being terminated when you log out or e
 * If you have a compute cluster with torque installed, you can instead use qsub instead by running the following commands :
 <br />
 
+---
+
 ./fastq-to-mtx_DSP762.sh 1
 ./fastq-to-mtx_DSP992.sh 1
+
+---
