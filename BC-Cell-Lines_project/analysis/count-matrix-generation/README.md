@@ -4,6 +4,7 @@
 
 * To generate the count matrices (for both DSP762 and DSP992), run :
 <br />
+
 ---
 **NOTE**
 
