@@ -4,8 +4,8 @@
 
 * To generate the count matrices (for both DSP762 and DSP992), run :
 
-nohup ./fastq-to-mtx_DSP762.sh &> ./nohup_fastq-to-mtx_762.out < /dev/null &    <br />
-nohup ./fastq-to-mtx_DSP992.sh &> ./nohup_fastq-to-mtx_992.out < /dev/null &
+<space><space> nohup ./fastq-to-mtx_DSP762.sh &> ./nohup_fastq-to-mtx_762.out < /dev/null &    <br />
+<space><space> nohup ./fastq-to-mtx_DSP992.sh &> ./nohup_fastq-to-mtx_992.out < /dev/null &
 
 
 
