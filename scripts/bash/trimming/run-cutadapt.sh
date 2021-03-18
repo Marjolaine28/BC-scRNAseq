@@ -58,7 +58,7 @@ done
 
 if [[ -n $cutadapt ]] || [[ $cutadapt != 'def' ]]
 then
-        export PATH="$PATH:$cutadapt/bin"
+        export PATH="$cutadapt/bin:$PATH"
 fi
 
 ### GET SAMPLE NAME

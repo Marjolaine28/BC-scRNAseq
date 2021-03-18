@@ -67,7 +67,7 @@ fi
 
 if [[ -n $salmon ]] || [[ $salmon != 'def' ]]
 then
-    export PATH="$PATH:$salmon/bin"
+    export PATH="$salmon/bin:$PATH"
 fi
 
 
