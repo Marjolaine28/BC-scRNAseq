@@ -1,7 +1,5 @@
 #!/bin/bash
 
-source ~/.bash_profile
-
 ####### HELP PANEL #######
 
 if [[ $1 = '--help' ]]
