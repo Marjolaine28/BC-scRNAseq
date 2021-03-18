@@ -1,5 +1,11 @@
 #!/bin/bash
 
+
+############################## GIT CONFIG ##############################
+
+git config --global alias.root 'rev-parse --show-toplevel'
+
+
 ############################## INSTALL REQUIRED PIPELINES ##############################
 
 if [[ ! -d $(git root)/pipelines ]]; 
