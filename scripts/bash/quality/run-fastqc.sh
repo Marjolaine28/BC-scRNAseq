@@ -66,7 +66,7 @@ fi
 
 if [[ -n $fastqc ]] || [[ $fastqc != 'def' ]]
 then
-    export PATH="$PATH:$fastqc"
+    export PATH="$fastqc:$PATH"
 fi
 
 
