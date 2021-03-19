@@ -86,7 +86,7 @@ salmon-get-decoys.sh -g $references_path/$ref/genome/GRCh38.primary_assembly.gen
 
 if [[ $torque = 0 ]]
 then
-    export PATH="$PATH:$pipelines_path/salmon/salmon-1.4.0/bin"
+    export PATH="$pipelines_path/salmon/salmon-1.4.0/bin:$PATH"
     salmon index -k 17 -t $output_folder_index/gentrome.fa.gz -d $output_folder_index/decoys.txt -i $output_folder_index/index_k17 --gencode
 
 else

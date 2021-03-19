@@ -1,6 +1,5 @@
 #!/bin/bash
 
-source ~/.bash_profile
 module load torque
 
 if [[ $1 = '--help' ]]
@@ -40,6 +39,7 @@ Script    $(basename $0)    must be run with args :
 exit 0
 fi
 
+#######  ARGUMENTS #######
 
 while [[ $# -gt 0 ]];
 do
@@ -58,13 +58,12 @@ do
 done
 
 
-# Default parameters 
-
 walltime=${walltime:-'30:00:00'}
 mem=${mem:-'100GB'}
 kmers=${kmers:-"17 19 23 31"}
 
-# Create index
+
+####### CREATE INDEX #######
 
 IFS=' ' declare -a 'kmers=(${kmers[@]})'; 
 for k in ${kmers[@]}
@@ -73,8 +72,8 @@ do
     mkdir -p $output_folder/logs/
     if [[ -n $decoys ]]
     then
-        echo "if [[ -n $salmon ]]; then export PATH="$PATH:$salmon/bin"; fi; salmon index -k $k -t $transcriptome -d $decoys -i $output_folder/index_k$k $args" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_folder/logs/ -N salmon_index_k${k}_decoys
+        echo "if [[ -n $salmon ]]; then export PATH="$salmon/bin:$PATH"; fi; salmon index -k $k -t $transcriptome -d $decoys -i $output_folder/index_k$k $args" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_folder/logs/ -N salmon_index_k${k}_decoys
     else
-        echo "if [[ -n $salmon ]]; then export PATH="$PATH:$salmon/bin"; fi; salmon index -k $k -t $transcriptome -i $output_folder/index_k$k $args" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_folder/logs/ -N salmon_index_k${k}
+        echo "if [[ -n $salmon ]]; then export PATH="$salmon/bin:$PATH"; fi; salmon index -k $k -t $transcriptome -i $output_folder/index_k$k $args" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_folder/logs/ -N salmon_index_k${k}
     fi
 done
