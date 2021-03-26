@@ -17,7 +17,7 @@ Script    $(basename $0)    must be run with a :
 
 
 
--i : input_r1 = path to fastq read 1
+-f : input_r1 = path to fastq read 1
 
 -o : output_folder = path where you want to store the quantificaton results
 
@@ -43,7 +43,7 @@ do
     opt="$1";
     shift; 
     case "$opt" in       
-        -i) input_r1="$1"; shift;;            
+        -f) input_r1="$1"; shift;;            
         -o) output_folder="$1"; shift;;
         -p) salmon="$1"; shift;;
         -args) args="$1"; IFS=' ' declare -a 'args=($args)'; shift;;
@@ -90,7 +90,7 @@ Salmon version : $(salmon --v)
 
 Run script    $(basename $0)    with args :
 
--i : $input_r1
+-f : $input_r1
 -o : $output_folder
 -p  $salmon
 -args : ${args[@]}

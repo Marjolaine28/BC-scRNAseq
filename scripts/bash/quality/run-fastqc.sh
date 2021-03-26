@@ -16,7 +16,7 @@ Script    $(basename $0)    must be run with a :
 
 
 
--i : input_r1 = path to fastq read 1
+-f : input_r1 = path to fastq read 1
 
 -o : output_folder = path where you want to store the quantificaton results
 
@@ -40,7 +40,7 @@ do
     opt="$1";
     shift; 
     case "$opt" in       
-        -i) input_r1="$1"; shift;;            
+        -f) input_r1="$1"; shift;;            
         -o) output_folder="$1"; shift;;
         -p) fastqc="$1"; shift;;
 		-l) lib="$1"; shift;;
@@ -91,7 +91,7 @@ FastQC version : fastqc --v
 
 Run script    $0    with args :
 
--i : $input_r1
+-f : $input_r1
 -o : $output_folder
 -p : $fastqc
 -l : $lib

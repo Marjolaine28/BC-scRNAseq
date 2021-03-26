@@ -26,7 +26,7 @@ Script    $(basename $0)    must be run with args :
 
 -p : path to the pipeline called in the script, e.g. /home/arion/davidm/Sofwares/cutadapt/cutadapt-3.2
 
--i : input_path = path to the data to process, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/raw
+-f : input_path = path to the fastq file to process, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/raw
 
 -o : output_path = path where you want to store output, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/trimmed
 
@@ -56,7 +56,7 @@ do
         -h) hold="$1"; shift;;
 	-r) run_path="$1"; shift;;  
         -p) pipeline="$1"; shift;;         
-        -i) input_path="$1"; shift;;            
+        -f) input_path="$1"; shift;;            
         -o) output_path="$1"; shift;;
 	-l) lib="$1"; shift;;
         -s) samples="$1"; IFS=' ' declare -a 'samples=($samples)'; shift;;
@@ -116,7 +116,7 @@ Run script    $(basename $0)    with args :
 -h : $hold
 -r : $run_path
 -p : $pipeline
--i : $input_path
+-f : $input_path
 -o : $output_path
 -l : $lib
 -s : $samples
@@ -171,11 +171,11 @@ do
         sname=${sname[*]: -2:1}                                                                                                 ### get sample name
         mkdir -p $output_path/$sname/logs/						                                        ### create log folder 
         # find  $output_path/$sname/ -mindepth 1 -maxdepth 1 -name '*fastq*' -exec rm -r 2>/dev/null "{}" \;	                ### remove existing results
-        $run_path -emp 1 -i $s -o $output_path -l $lib -p $pipeline                                                        ### it is useful to create empty files and folder for job with hold status (they take output of previous task as input, but if the output is not available yet the holding task would have no input)
+        $run_path -emp 1 -f $s -o $output_path -l $lib -p $pipeline                                                        ### it is useful to create empty files and folder for job with hold status (they take output of previous task as input, but if the output is not available yet the holding task would have no input)
 		
         if [[ $hold = 0 ]]                                                                                                      ### submit jobs ; hold option allows to wait for some previous task to finish before exection
         then    
-                echo "$run_path -i $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}"
+                echo "$run_path -f $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}"
         else	
                 W=$J				
                 for hj in ${hold[@]}
@@ -197,7 +197,7 @@ do
                 done
                 W=${W:1}
                 echo "Wait job $W to complete before queueing :"
-                echo "$run_path -i $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}" -W depend=afterok:$W
+                echo "$run_path -f $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}" -W depend=afterok:$W
                 echo "(Hold status)"
         fi
 done

@@ -18,7 +18,7 @@ Script    $(basename $0)    must be run with args :
 
 -p : path to the pipeline called in the script, e.g. /home/arion/davidm/Sofwares/cutadapt/cutadapt-3.2
 
--i : input_path = path to the data to process, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/raw
+-f : input_path = path to the fasqt file to process, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/raw
 
 -o : output_path = path where you want to store output, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/trimmed
 
@@ -45,7 +45,7 @@ do
     case "$opt" in
 	    -r) run_path="$1"; shift;;  
         -p) pipeline="$1"; shift;;         
-        -i) input_path="$1"; shift;;            
+        -f) input_path="$1"; shift;;            
         -o) output_path="$1"; shift;;
 	    -l) lib="$1"; shift;;
         -s) samples="$1"; IFS=' ' declare -a 'samples=($samples)'; shift;;
@@ -102,7 +102,7 @@ Run script    $(basename $0)    with args :
 
 -p : $pipeline
 -r : $run_path
--i : $input_path
+-f : $input_path
 -o : $output_path
 -l : $lib
 -s : $samples
@@ -132,5 +132,5 @@ do
         sname=${sname[*]: -2:1}                                                                                                 ### get sample name
         mkdir -p $output_path/$sname/logs/						                                                                ### create log folder 
         # find  $output_path/$sname/ -mindepth 1 -maxdepth 1 -name '*fastq*' -exec rm -r 2>/dev/null "{}" \;	                ### remove existing results
-        $run_path -i $s -o $output_path -p $pipeline -args "$args" -l $lib
+        $run_path -f $s -o $output_path -p $pipeline -args "$args" -l $lib
 done

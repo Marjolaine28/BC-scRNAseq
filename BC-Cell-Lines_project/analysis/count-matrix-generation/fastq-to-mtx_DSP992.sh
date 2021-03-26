@@ -58,21 +58,21 @@ merge-fastq-iric.sh $data_path/raw-fastqs
 
 ############################## QUALITY OF THE READS ##############################
 
-$submit -w 03:00:00 -m 20gb -h "0" -r $scripts_path/quality/run-fastqc.sh -i $data_path/raw-fastqs -o $data_path/raw-fastqs -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+$submit -w 03:00:00 -m 20gb -h "0" -r $scripts_path/quality/run-fastqc.sh -f $data_path/raw-fastqs -o $data_path/raw-fastqs -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
 
 
 
 
 # ############################## TRIMMING READS ##############################
 
-$submit -w 06:00:00 -m 30gb -h "0" -r $scripts_path/trimming/run-cutadapt.sh -i $data_path/raw-fastqs -o $data_path/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/cutadapt/cutadapt-3.2 -args '--times 8 -m 20:20 -a CTGTCTCTTATACACATCTC -A GTACTCTGCGTTGATACCACTGCTTCCGCGGACAGGCGTGTAGATCTCGGTGGTCGCCGTATC'
+$submit -w 06:00:00 -m 30gb -h "0" -r $scripts_path/trimming/run-cutadapt.sh -f $data_path/raw-fastqs -o $data_path/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/cutadapt/cutadapt-3.2 -args '--times 8 -m 20:20 -a CTGTCTCTTATACACATCTC -A GTACTCTGCGTTGATACCACTGCTTCCGCGGACAGGCGTGTAGATCTCGGTGGTCGCCGTATC'
 
 
 
 
 # ############################## QUALITY OF THE READS (TRIMMED) ##############################
 
-$submit -w 03:00:00 -m 20gb -h "1" -r $scripts_path/quality/run-fastqc.sh -i $data_path/trimmed-fastqs/cutadapt -o $data_path/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+$submit -w 03:00:00 -m 20gb -h "1" -r $scripts_path/quality/run-fastqc.sh -f $data_path/trimmed-fastqs/cutadapt -o $data_path/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
 
 
 
@@ -106,7 +106,7 @@ sed -i 's/>//g' $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_t
 
 # Run Alevin using forceCells 7000 and noWhitelist (more straightforward than Alevin default specific \
 # whitelisitng procedure, which often fails with initial knee estimation and is performing a final classification of the quality the cells which is confusing)
-$submit -w 30:00:00 -m 100gb -h '1 2n' -r $scripts_path/quantification/run-alevin.sh -i $data_path/trimmed-fastqs/cutadapt \
+$submit -w 30:00:00 -m 100gb -h '1 2n' -r $scripts_path/quantification/run-alevin.sh -f $data_path/trimmed-fastqs/cutadapt \
 -o $data_path/quant/alevin/$ref/trimmed-reads-cutadapt/pc-decoys-k17-1.4.0/forceCells-7000-noWh/raw -seq "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
 -args "-l ISR -i $output_folder_index/index_k17 --tgMap $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_txp2gene.tsv \
 --dropseq --dumpMtx --dumpFeatures --dumpUmiGraph --dumpCellEq --dumpBfh --dumpArborescences --forceCells 7000 --noWhitelist"

@@ -16,7 +16,7 @@ Script    $(basename $0)    must be run with args :
 
 
 
--i : input fastq file (= path to fastq read 1 if paired-end)
+-f : input fastq file (= path to fastq read 1 if paired-end)
 
 -o : output_path = path where you want to store the quantificaton results
 
@@ -44,7 +44,7 @@ do
     opt="$1";
     shift; 
     case "$opt" in       
-        -i) input_r1="$1"; shift;;            
+        -f) input_r1="$1"; shift;;            
         -o) output_path="$1"; shift;;
         -l) lib="$1"; shift;;
         -p) cutadapt="$1"; shift;;
@@ -105,7 +105,7 @@ cutadapt version : $(cutadapt --version)
 
 Run script    $(basename $0)    with args :
 
--i : $input_r1
+-f : $input_r1
 -o : $output_path
 -p : $cutadapt
 -l : $lib
