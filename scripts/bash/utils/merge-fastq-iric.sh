@@ -15,7 +15,7 @@ do
 
 	if [[ $lib == "PE" ]]
 		then 
-			n=$(find $s -name "*1.fastq.gz" | wc -l)
+			n=$(find $s -maxdepth 1 -name "*1.fastq.gz" | wc -l)
 			if [[ $n == 1 ]]
 				then 
 					mv $s/*1.fastq.gz $s/$(basename $s)_1.fastq.gz
@@ -35,7 +35,7 @@ do
 
 	elif [[ $lib == "SE" ]]
 		then 
-			n=$(find $s -name "*.fastq.gz" | wc -l)
+			n=$(find $s -maxdepth 1 -name "*.fastq.gz" | wc -l)
 			if [[ $n == 1 ]]
 				then 
 					mv $s/*.fastq.gz $s/$(basename $s).fastq.gz
