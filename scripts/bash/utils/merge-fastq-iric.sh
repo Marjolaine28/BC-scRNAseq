@@ -15,7 +15,7 @@ do
 
 	if [[ $lib == "PE" ]]
 		then 
-			n=$(find $s -maxdepth 1 -name "*1.fastq.gz" | wc -l)
+			n=$(find $s -maxdepth 1 -name "*R1*.fastq.gz" | wc -l)
 			if [[ $n == 1 ]]
 				then 
 					mv $s/*1.fastq.gz $s/$(basename $s)_1.fastq.gz
@@ -29,8 +29,8 @@ do
 					echo "$n files to merge ...
 
 					"
-					cat $(find $s/unmerged -name "*1.fastq.gz") > $s/$(basename $s)_1.fastq.gz
-					cat $(find $s/unmerged -name "*2.fastq.gz") > $s/$(basename $s)_2.fastq.gz
+					cat $(find $s/unmerged -name "*R1*.fastq.gz") > $s/$(basename $s)_1.fastq.gz
+					cat $(find $s/unmerged -name "*R2*.fastq.gz") > $s/$(basename $s)_2.fastq.gz
 			fi
 
 	elif [[ $lib == "SE" ]]

@@ -2,7 +2,7 @@
 
 torque=${1:-"0"}
 data_path=${2:-"$(git root)/BC-Cell-Lines_project/data/dsp992"}
-scripts_path=${3:-"$(git root)/scripts/bash"}
+scripts_path=${3:-"$(git root)/scripts"}
 references_path=${3:-"$(git root)/references"}
 pipelines_path=${3:-"$(git root)/pipelines"}
 
@@ -13,8 +13,8 @@ pipelines_path=${3:-"$(git root)/pipelines"}
 
 source ~/.bash_profile
 
-export PATH="$PATH:$scripts_path/utils/" 
-export PATH="$PATH:$scripts_path/quantification/" 
+export PATH="$PATH:$scripts_path/bash/utils/" 
+export PATH="$PATH:$scripts_path/bash/quantification/" 
 
 if [[ $torque = 0 ]]
 then
@@ -88,8 +88,8 @@ $submit -w 03:00:00 -m 20gb -h "1" -r $scripts_path/quality/run-fastqc.sh -f $da
 
 output_folder_index=$pipelines_path/salmon/salmon-1.4.0/files/$ref/pc-decoys      # pc-decoys means that the index is build on the protein-coding gene set and using decoys
 
-salmon-get-decoys.sh -g $references_path/$ref/genome/GRCh38.primary_assembly.genome.fa.gz \
--t $references_path/$ref/transcriptome/gencode.v34.pc_transcripts.fa.gz -o $output_folder_index
+salmon-get-decoys.sh -g $references_path/$ref/GRCh38.primary_assembly.genome.fa.gz \
+-t $references_path/$ref/gencode.v34.pc_transcripts.fa.gz -o $output_folder_index
 
 if [[ $torque = 0 ]]
 then
@@ -107,13 +107,13 @@ fi
 ############################## QUANTIFICATION ##############################
 
 # Get transcripts to gene mappings
-zcat $references_path/$ref/transcriptome/gencode.v34.pc_transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_txp2gene.tsv
-sed -i 's/|/\t/g' $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_txp2gene.tsv
-sed -i 's/>//g' $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_txp2gene.tsv
+zcat $references_path/$ref/gencode.v34.pc_transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $references_path/$ref/gencode.v34.pc_transcripts_txp2gene.tsv
+sed -i 's/|/\t/g' $references_path/$ref/gencode.v34.pc_transcripts_txp2gene.tsv
+sed -i 's/>//g' $references_path/$ref/gencode.v34.pc_transcripts_txp2gene.tsv
 
 # Run Alevin using forceCells 7000 and noWhitelist (more straightforward than Alevin default specific \
 # whitelisitng procedure, which often fails with initial knee estimation and is performing a final classification of the quality the cells which is confusing)
 $submit -w 30:00:00 -m 100gb -h '1 2n' -r $scripts_path/quantification/run-alevin.sh -f $data_path/trimmed-fastqs/cutadapt \
 -o $data_path/quant/alevin/$ref/trimmed-reads-cutadapt/pc-decoys-k17-1.4.0/forceCells-7000-noWh/raw -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
--args "-l ISR -i $output_folder_index/index_k17 --tgMap $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_txp2gene.tsv \
+-args "-l ISR -i $output_folder_index/index_k17 --tgMap $references_path/$ref/gencode.v34.pc_transcripts_txp2gene.tsv \
 --dropseq --dumpMtx --dumpFeatures --dumpUmiGraph --dumpCellEq --dumpBfh --dumpArborescences --forceCells 7000 --noWhitelist"

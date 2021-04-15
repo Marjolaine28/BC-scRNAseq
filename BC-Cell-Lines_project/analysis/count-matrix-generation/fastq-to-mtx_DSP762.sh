@@ -2,7 +2,7 @@
 
 torque=${1:-"0"}
 data_path=${2:-"$(git root)/BC-Cell-Lines_project/data/dsp762"}
-scripts_path=${3:-"$(git root)/scripts/bash"}
+scripts_path=${3:-"$(git root)/scripts"}
 references_path=${3:-"$(git root)/references"}
 pipelines_path=${3:-"$(git root)/pipelines"}
 
@@ -13,8 +13,8 @@ pipelines_path=${3:-"$(git root)/pipelines"}
 
 source ~/.bash_profile
 
-export PATH="$PATH:$scripts_path/utils/" 
-export PATH="$PATH:$scripts_path/quantification/" 
+export PATH="$PATH:$scripts_path/bash/utils/" 
+export PATH="$PATH:$scripts_path/bash/quantification/" 
 
 if [[ $torque = 0 ]]
 then
@@ -83,7 +83,7 @@ $submit -w 03:00:00 -m 20gb -h "1" -r $scripts_path/quality/run-fastqc.sh -f $da
 
 output_folder_index=$pipelines_path/salmon/salmon-1.4.0/files/$ref/pc-decoys      # pc-decoys means that the index is build on the protein-coding gene set and using decoys
 
-salmon-get-decoys.sh -g $references_path/$ref/genome/GRCh38.primary_assembly.genome.fa.gz \
+salmon-get-decoys.sh -g $references_path/$ref/GRCh38.primary_assembly.genome.fa.gz \
 -t $references_path/$ref/transcriptome/gencode.v34.pc_transcripts.fa.gz -o $output_folder_index
 
 if [[ $torque = 0 ]]
