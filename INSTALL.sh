@@ -38,14 +38,15 @@ fi
 
 ############################## DOWNLOAD REFERENCE GENOME AND TRANSCRIPTOME ##############################
 
-ref=human/assembly__GRCh38-hg38/annotation__gencode/gencode_34
+assembly=human/assembly__GRCh38-hg38
+annot=annotation__gencode/gencode_34
 
 if [[ ! -d $(git root)/references ]]; 
 then 
     mkdir -p $(git root)/references
 
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.pc_transcripts.fa.gz -P $(git root)/references/$ref/transcriptome
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $(git root)/references/$ref/genome
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.pc_transcripts.fa.gz -P $(git root)/references/$assembly/$annot
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $(git root)/references/$assembly
 else
     echo "References already available."
 fi

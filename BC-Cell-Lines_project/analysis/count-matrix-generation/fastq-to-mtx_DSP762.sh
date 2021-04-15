@@ -3,8 +3,8 @@
 torque=${1:-"0"}
 data_path=${2:-"$(git root)/BC-Cell-Lines_project/data/dsp762"}
 scripts_path=${3:-"$(git root)/scripts"}
-references_path=${3:-"$(git root)/references"}
-pipelines_path=${3:-"$(git root)/pipelines"}
+references_path=${4:-"$(git root)/references"}
+pipelines_path=${5:-"$(git root)/pipelines"}
 
 
 
@@ -23,9 +23,9 @@ else
     submit=qsub-all-fastqs.sh
 fi
 
-ref=human/assembly__GRCh38-hg38/annotation__gencode/gencode_34
 
-
+assembly=human/assembly__GRCh38-hg38
+annot=annotation__gencode/gencode_34
 
 
 ############################## DOWNLOAD FASTQ FILES ##############################
@@ -60,55 +60,63 @@ merge-fastq-iric.sh $data_path/raw-fastqs
 
 ############################## QUALITY OF THE READS ##############################
 
-$submit -w 03:00:00 -m 20gb -h "0" -r $scripts_path/quality/run-fastqc.sh -f $data_path/raw-fastqs -o $data_path/raw-fastqs -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+$submit -w 03:00:00 -m 20gb -h "0" -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/raw-fastqs -o $data_path/raw-fastqs -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
 
 
 
 
 # ############################## TRIMMING READS ##############################
 
-$submit -w 06:00:00 -m 30gb -h "0" -r $scripts_path/trimming/run-cutadapt.sh -f $data_path/raw-fastqs -o $data_path/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/cutadapt/cutadapt-3.2 -args '--times 8 -m 20:20 -a CTGTCTCTTATACACATCTC -A GTACTCTGCGTTGATACCACTGCTTCCGCGGACAGGCGTGTAGATCTCGGTGGTCGCCGTATC'
+$submit -w 06:00:00 -m 30gb -h "0" -r $scripts_path/bash/trimming/run-cutadapt.sh -f $data_path/raw-fastqs -o $data_path/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/cutadapt/cutadapt-3.2 -args '--times 8 -m 20:20 -a CTGTCTCTTATACACATCTC -A GTACTCTGCGTTGATACCACTGCTTCCGCGGACAGGCGTGTAGATCTCGGTGGTCGCCGTATC'
 
 
 
 
 # ############################## QUALITY OF THE READS (TRIMMED) ##############################
 
-$submit -w 03:00:00 -m 20gb -h "1" -r $scripts_path/quality/run-fastqc.sh -f $data_path/trimmed-fastqs/cutadapt -o $data_path/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+$submit -w 03:00:00 -m 20gb -h "1" -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/trimmed-fastqs/cutadapt -o $data_path/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
 
 
 
 
 ############################## SALMON INDEXING ##############################
 
-output_folder_index=$pipelines_path/salmon/salmon-1.4.0/files/$ref/pc-decoys      # pc-decoys means that the index is build on the protein-coding gene set and using decoys
+output_folder_index=$pipelines_path/salmon/salmon-1.4.0/files/$assembly/$annot/pc-decoys      # pc-decoys means that the index is build on the protein-coding gene set and using decoys
 
-salmon-get-decoys.sh -g $references_path/$ref/GRCh38.primary_assembly.genome.fa.gz \
--t $references_path/$ref/transcriptome/gencode.v34.pc_transcripts.fa.gz -o $output_folder_index
-
-if [[ $torque = 0 ]]
+if [[ ! -f $output_folder_index/decoys.txt && ! -f $output_folder_index/gentrome.fa ]] 
 then
-    export PATH="$pipelines_path/salmon/salmon-1.4.0/bin:$PATH"
-    salmon index -k 17 -t $output_folder_index/gentrome.fa.gz -d $output_folder_index/decoys.txt -i $output_folder_index/index_k17 --gencode
+    salmon-get-decoys.sh -g $references_path/$assembly/GRCh38.primary_assembly.genome.fa.gz \
+    -t $references_path/$assembly/$annot/gencode.v34.pc_transcripts.fa.gz -o $output_folder_index
+fi 
 
-else
-    qsub-salmon-indexing.sh -w 15:00:00 -m 150gb -t $output_folder_index/gentrome.fa.gz -d $output_folder_index/decoys.txt -o $output_folder_index -k 17 -p $pipelines_path/salmon/salmon-1.4.0 -args '--gencode'
+if [[ ! -d $output_folder_index/index_k17 ]] 
+then
+    if [[ $torque = 0 ]]
+    then
+        export PATH="$pipelines_path/salmon/salmon-1.4.0/bin:$PATH"
+        salmon index -k 17 -t $output_folder_index/gentrome.fa.gz -d $output_folder_index/decoys.txt -i $output_folder_index/index_k17 --gencode
+
+    else
+        qsub-salmon-indexing.sh -w 15:00:00 -m 150gb -t $output_folder_index/gentrome.fa.gz -d $output_folder_index/decoys.txt -o $output_folder_index -k 17 -p $pipelines_path/salmon/salmon-1.4.0 -args '--gencode'
+    fi
 fi
-
-
 
 
 
 ############################## QUANTIFICATION ##############################
 
 # Get transcripts to gene mappings
-zcat $references_path/$ref/transcriptome/gencode.v34.pc_transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_txp2gene.tsv
-sed -i 's/|/\t/g' $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_txp2gene.tsv
-sed -i 's/>//g' $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_txp2gene.tsv
+
+if [[ ! -f $references_path/$assembly/$annot/gencode.v34.pc_transcripts_txp2gene.tsv ]] 
+then
+    zcat $references_path/$assembly/$annot/gencode.v34.pc_transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $references_path/$assembly/$annot/gencode.v34.pc_transcripts_txp2gene.tsv
+    sed -i 's/|/\t/g' $references_path/$assembly/$annot/gencode.v34.pc_transcripts_txp2gene.tsv
+    sed -i 's/>//g' $references_path/$assembly/$annot/gencode.v34.pc_transcripts_txp2gene.tsv
+fi
 
 # Run Alevin using forceCells 7000 and noWhitelist (more straightforward than Alevin default specific \
 # whitelisitng procedure, which often fails with initial knee estimation and is performing a final classification of the quality the cells which is confusing)
-$submit -w 30:00:00 -m 100gb -h '1 2n' -r $scripts_path/quantification/run-alevin.sh -f $data_path/trimmed-fastqs/cutadapt \
--o $data_path/quant/alevin/$ref/trimmed-reads-cutadapt/pc-decoys-k17-1.4.0/forceCells-7000-noWh/raw -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
--args "-l ISR -i $output_folder_index/index_k17 --tgMap $references_path/$ref/transcriptome/gencode.v34.pc_transcripts_txp2gene.tsv \
+$submit -w 30:00:00 -m 100gb -h '1 2n' -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/trimmed-fastqs/cutadapt \
+-o $data_path/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/pc-decoys-k17-1.4.0/forceCells-7000-noWh/raw -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
+-args "-l ISR -i $output_folder_index/index_k17 --tgMap $references_path/$assembly/$annot/gencode.v34.pc_transcripts_txp2gene.tsv \
 --dropseq --dumpMtx --dumpFeatures --dumpUmiGraph --dumpCellEq --dumpBfh --dumpArborescences --forceCells 7000 --noWhitelist"
