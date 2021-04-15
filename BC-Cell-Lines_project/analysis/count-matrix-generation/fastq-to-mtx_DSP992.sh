@@ -46,6 +46,13 @@ for s in $samples; do cp -r $s $data_path/raw-fastqs; done
 samples=$(find $data_path/raw-fastqs -mindepth 1 -maxdepth 1 -type d)
 for s in $samples; do d=$(basename $s); IFS='_' declare -a 'd=($d)'; mv $s $data_path/raw-fastqs/${d[0]}; done           # this renaming step might be specific to the project (depends how the samples files were originally named by the IRIC genomic platform)
 
+### Correct the swith between HCC70 and MDAMB436 cell lines
+x=($(find $data_path/raw-fastqs -type d -name HCC70))
+for i in ${x[@]}; do mv $i ${i/HCC70/MDAMB436-tmp}; done
+x=($(find $data_path/raw-fastqs -type d -name MDAMB436))
+for i in ${x[@]}; do mv $i ${i/MDAMB436/HCC70}; done
+x=($(find $data_path/raw-fastqs -type d -name MDAMB436-tmp))
+for i in ${x[@]}; do mv $i ${i/MDAMB436-tmp/MDAMB436}; done
 
 
 

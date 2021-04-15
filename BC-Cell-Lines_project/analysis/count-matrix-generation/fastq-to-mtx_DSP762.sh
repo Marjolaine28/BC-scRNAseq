@@ -46,7 +46,9 @@ for s in $samples; do cp -r $s $data_path/raw-fastqs; done
 samples=$(find $data_path/raw-fastqs -mindepth 1 -maxdepth 1 -type d)
 for s in $samples; do d=$(basename $s); IFS='_' declare -a 'd=($d)'; mv $s $data_path/raw-fastqs/${d[1]}; done           # this renaming step might be specific to the project (depends how the samples files were originally named by the IRIC genomic platform)
 
-
+### Correct the name of MCF7 cell line
+x=($(find $data_path/raw-fastqs -type d -name MCF7-labbo))
+for i in ${x[@]}; do mv $i ${i/MCF7-labbo/MCF7-labo}; done
 
 
 ############################## MERGE FASTQ FILES ##############################
