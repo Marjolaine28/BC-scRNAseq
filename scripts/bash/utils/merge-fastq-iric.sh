@@ -1,54 +1,51 @@
 #!/bin/bash
 
-path=$1 #path to raw data, e.g. $data/datasets/private/RNA-seq/bulk/DSP356/raw
-lib=${2:-"PE"}
+input_path=$1 #path to raw data, e.g. $data/datasets/private/RNA-seq/bulk/DSP356/raw
+output_path=$2
+lib=${3:-"PE"}
 
 #for file in $path/Sample_*; do mv "$file" "${file#Sample_}";done;
 #for file in $path/*; do mv "$file" "${file%_N*}";done;
 
-
-samples=$(find $path -mindepth 1 -maxdepth 1 -type d)
-for s in $samples
+samples=$(find $input_path -mindepth 6 -maxdepth 7 -type d)
+for s in ${samples[@]}
 do
-
-	echo "Merging $(basename $s) fastq files..."
+ 
+	out=$output_path/$(basename $s)
+	mkdir -p $out
+	echo "Merging $(basename $s) fastq files..." 
+	echo "Merging $(basename $s) fastq files..." >> $out/merge.log
 
 	if [[ $lib == "PE" ]]
 		then 
-			n=$(find $s -maxdepth 1 -name "*R1*.fastq.gz" | wc -l)
-			if [[ $n == 1 ]]
-				then 
-					mv $s/*1.fastq.gz $s/$(basename $s)_1.fastq.gz
-					mv $s/*2.fastq.gz $s/$(basename $s)_2.fastq.gz
-					echo "No need to merge.
-
-					"
+			if [[ -f $out/$(basename $s)_R1.fastq.gz ]]
+			then
+				echo "$(basename $s) already merged.
+				
+				" >> $out/merge.log
 			else
-					mkdir -p $s/unmerged
-					mv $s/*fastq.gz $s/unmerged 2>/dev/null
-					echo "$n files to merge ...
+				n1=($(find $s -name "*_R1_*.fastq.gz"))
+				n2=($(find $s -name "*_R2_*.fastq.gz"))
+				echo "${#n1[@]} files to merge ...
 
-					"
-					cat $(find $s/unmerged -name "*R1*.fastq.gz") > $s/$(basename $s)_1.fastq.gz
-					cat $(find $s/unmerged -name "*R2*.fastq.gz") > $s/$(basename $s)_2.fastq.gz
+				" >> $out/merge.log
+				cat ${n1[@]} > $out/$(basename $s)_R1.fastq.gz
+				cat ${n2[@]} > $out/$(basename $s)_R2.fastq.gz
 			fi
 
 	elif [[ $lib == "SE" ]]
 		then 
-			n=$(find $s -maxdepth 1 -name "*.fastq.gz" | wc -l)
-			if [[ $n == 1 ]]
-				then 
-					mv $s/*.fastq.gz $s/$(basename $s).fastq.gz
-					echo "No need to merge.
-
-					"
+			if [[ -f $out/$(basename $s).fastq.gz ]]
+			then
+				echo "$(basename $s) already merged.
+				
+				" >> $out/merge.log
 			else
-					mkdir -p $s/unmerged
-					mv $s/*fastq.gz $s/unmerged 2>/dev/null
-					echo "$n files to merge ...
+				n=($(find $s -name "*.fastq.gz"))
+				echo "${#n[@]} files to merge ...
 
-					"
-					cat $(find $s/unmerged -name "*.fastq.gz") > $s/$(basename $s).fastq.gz
+				" >> $out/merge.log
+				cat ${n[@]} > $out/$(basename $s).fastq.gz
 			fi
 
 	else

@@ -65,32 +65,32 @@ do
 done
 
 lib=${lib:-'PE'}
+hold=${hold:-'0'}
 samples=${samples:-'all'}  
-pipeline=${pipeline:-'def'} 
+pipeline=${pipeline:-'def'}
+hold=${hold:-'0'}
 
 
 ####### CACLCULATE TOTAL NUMBER OF SAMPLES (INCLUDING REPLICATES) THAT WILL BE PROCESSED #######
 
 if [[ $samples = 'all' ]]
 then
-    if [[ $lib = PE ]]
-    then
-        S=($(find $input_path -maxdepth 2 -name *1.fastq*))
-    elif [[ $lib = SE ]]
+    if [[ $lib = SE ]]
     then
         S=($(find $input_path -maxdepth 2 -name *.fastq*))
+    else
+        S=($(find $input_path -maxdepth 2 -name *r1.fastq*))
     fi
 else
     S=()
     for s in ${samples[@]};
     do
-            if [[ $lib = PE ]]
-            then
-                    rep=($(find $input_path/$s/ -maxdepth 1 -name *1.fastq*))
-                    S=(${S[@]} $rep)
-            elif [[ $lib = SE ]]
+            if [[ $lib = SE ]]
             then
                     rep=($(find $input_path/$s/ -maxdepth 1 -name *.fastq*))
+            else
+                    rep=($(find $input_path/$s/ -maxdepth 1 -name *r1.fastq*))
+                    S=(${S[@]} $rep)
             fi
     done
 fi

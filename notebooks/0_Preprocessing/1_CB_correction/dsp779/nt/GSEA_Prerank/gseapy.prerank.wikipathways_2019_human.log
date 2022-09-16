@@ -1,0 +1,532 @@
+LINE 282 : 2021-10-06 06:06:54,312 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:06:54,312 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:06:54,312 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:06:54,313 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:06:54,313 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:06:54,422 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:06:54,422 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:06:54,422 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:06:54,422 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:06:54,422 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:06:54,494 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:06:54,494 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:06:54,494 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:06:54,494 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:06:54,494 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:06:58,999 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:06:59,000 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:06:59,000 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:06:59,001 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:06:59,001 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:06:59,127 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:06:59,127 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:06:59,127 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:06:59,127 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:06:59,127 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:06:59,657 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:06:59,657 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:06:59,658 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:06:59,658 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:06:59,658 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:07:03,608 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:07:03,608 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:07:03,608 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:07:03,609 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:07:03,609 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:16:55,624 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:16:55,624 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:16:55,624 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:16:55,625 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:16:55,625 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:16:55,802 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:16:55,803 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:16:55,803 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:16:55,804 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:16:55,804 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:16:55,974 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:16:55,974 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:16:55,974 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:16:55,975 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:16:55,975 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:17:02,329 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:17:02,330 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:17:02,330 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:17:02,331 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:17:02,331 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:17:03,427 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:17:03,427 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:17:03,427 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:17:03,428 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:17:03,429 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:17:34,490 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:17:34,490 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:17:34,490 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:17:34,493 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:17:34,493 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:17:34,545 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:17:34,546 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:17:34,546 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:17:34,548 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:17:34,549 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:17:34,658 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:17:34,659 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:17:34,659 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:17:34,661 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:17:34,661 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:01,973 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:01,974 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:01,974 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:01,975 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:01,975 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:02,097 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:02,097 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:02,097 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:02,098 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:02,098 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:02,481 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:02,481 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:02,481 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:02,482 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:02,482 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:02,933 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:02,934 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:02,934 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:02,934 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:02,935 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:03,114 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:03,115 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:03,115 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:03,115 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:03,115 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:03,375 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:03,376 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:03,376 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:03,376 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:03,377 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:06,274 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:06,275 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:06,275 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:06,275 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:06,276 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:07,144 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:07,144 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:07,144 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:07,145 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:07,145 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:07,243 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:07,243 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:07,243 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:07,244 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:07,244 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:08,131 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:08,132 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:08,132 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:08,133 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:08,133 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:08,435 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:08,436 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:08,436 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:08,437 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:08,437 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:08,732 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:08,733 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:08,733 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:08,734 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:08,734 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:10,722 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:10,723 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:10,723 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:10,724 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:10,724 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:11,193 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:11,193 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:11,194 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:11,195 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:11,195 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:12,429 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:12,430 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:12,430 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:12,431 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:12,431 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:15,744 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:15,745 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:15,745 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:15,746 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:15,746 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:15,801 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:15,802 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:15,802 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:15,803 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:15,803 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:16,128 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:16,128 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:16,128 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:16,129 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:16,129 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:17,202 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:17,202 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:17,202 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:17,204 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:17,204 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:17,309 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:17,309 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:17,310 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:17,310 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:17,311 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:17,518 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:17,518 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:17,518 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:17,519 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:17,520 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:18:54,122 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:18:54,123 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:18:54,123 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:18:54,123 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:18:54,124 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:05,863 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:05,864 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:05,864 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:05,865 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:05,865 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:05,968 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:05,968 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:05,968 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:05,969 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:05,969 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:06,176 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:06,176 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:06,177 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:06,177 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:06,178 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:06,283 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:06,283 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:06,283 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:06,284 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:06,284 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:06,736 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:06,736 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:06,737 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:06,737 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:06,738 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:10,189 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:10,189 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:10,190 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:10,191 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:10,191 [DEBUG   ] diff parser end
+LINE 143 : 2021-10-06 06:19:10,943 [DEBUG   ] pickle loaded: /u/davidm/VirtualEns/python_3.6.8/lib64/python3.6/site-packages/anndata/compat/_overloaded_dict.py
+LINE 143 : 2021-10-06 06:19:10,983 [DEBUG   ] pickle loaded: /usr/lib64/python3.6/collections/abc.py
+LINE 143 : 2021-10-06 06:19:11,017 [DEBUG   ] pickle loaded: /u/davidm/VirtualEns/python_3.6.8/lib64/python3.6/site-packages/jedi/third_party/typeshed/stdlib/3/collections/abc.pyi
+LINE 282 : 2021-10-06 06:19:12,803 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:12,803 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:12,803 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:12,804 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:12,804 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:13,032 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:13,032 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:13,032 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:13,032 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:13,032 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:13,619 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:13,619 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:13,619 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:13,620 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:13,621 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:13,823 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:13,823 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:13,823 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:13,824 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:13,824 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:14,439 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:14,439 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:14,440 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:14,441 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:14,441 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:24,435 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:24,435 [DEBUG   ] line_lengths old: 1; new: 2
+LINE 297 : 2021-10-06 06:19:24,435 [DEBUG   ] -> code[replace] old[1:1] new[1:2]
+LINE 425 : 2021-10-06 06:19:24,438 [DEBUG   ] parse_part from 1 to 2 (to 1 in part parser)
+LINE 339 : 2021-10-06 06:19:24,438 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:48,364 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:48,365 [DEBUG   ] line_lengths old: 2; new: 1
+LINE 297 : 2021-10-06 06:19:48,365 [DEBUG   ] -> code[replace] old[1:2] new[1:1]
+LINE 425 : 2021-10-06 06:19:48,365 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:48,365 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:54,162 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:54,162 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:54,162 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:54,163 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:54,163 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:54,341 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:54,341 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:54,341 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:54,342 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:54,342 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:54,826 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:54,827 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:54,827 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:54,827 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:54,828 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:55,853 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:55,854 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:55,854 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:55,854 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:55,855 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:58,146 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:58,146 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:58,146 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:58,147 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:58,147 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:58,603 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:58,603 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:58,603 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:58,604 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:58,604 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:19:58,997 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:19:58,998 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:19:58,998 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:19:58,999 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:19:58,999 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:20:13,122 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:20:13,123 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:20:13,123 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:20:13,124 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:20:13,124 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:20:14,704 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:20:14,705 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:20:14,705 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:20:14,706 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:20:14,706 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:20:20,364 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:20:20,365 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:20:20,365 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:20:20,366 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:20:20,366 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:20:20,720 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:20:20,721 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:20:20,721 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:20:20,723 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:20:20,723 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:20:21,919 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:20:21,920 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:20:21,920 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:20:21,921 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:20:21,921 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:20:22,319 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:20:22,320 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:20:22,320 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:20:22,321 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:20:22,322 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:20:22,374 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:20:22,375 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:20:22,375 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:20:22,376 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:20:22,376 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:20:28,759 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:20:28,759 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:20:28,759 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:20:28,760 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:20:28,760 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:20:28,862 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:20:28,862 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:20:28,862 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:20:28,863 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:20:28,863 [DEBUG   ] diff parser end
+LINE 501 : 2021-10-06 06:20:37,363 [INFO    ] Parsing data files for GSEA.............................
+LINE 231 : 2021-10-06 06:20:37,365 [DEBUG   ] Starting new HTTP connection (1): amp.pharm.mssm.edu:80
+LINE 461 : 2021-10-06 06:20:37,518 [DEBUG   ] http://amp.pharm.mssm.edu:80 "GET /Enrichr/datasetStatistics HTTP/1.1" 307 171
+LINE 975 : 2021-10-06 06:20:37,535 [DEBUG   ] Starting new HTTPS connection (1): maayanlab.cloud:443
+LINE 461 : 2021-10-06 06:20:37,671 [DEBUG   ] https://maayanlab.cloud:443 "GET /Enrichr/datasetStatistics HTTP/1.1" 200 None
+LINE 166 : 2021-10-06 06:20:37,696 [INFO    ] Enrichr library gene sets already downloaded in: /u/davidm/.cache/gseapy, use local file
+LINE 135 : 2021-10-06 06:20:39,743 [INFO    ] 0472 gene_sets have been filtered out when max_size=500 and min_size=15
+LINE 139 : 2021-10-06 06:20:39,743 [ERROR   ] No gene sets passed through filtering condition!!!, try new parameters again!
+Note: check gene name, gmt file format, or filtering size.
+LINE 282 : 2021-10-06 06:22:29,567 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:22:29,567 [DEBUG   ] line_lengths old: 1; new: 2
+LINE 297 : 2021-10-06 06:22:29,567 [DEBUG   ] -> code[replace] old[1:1] new[1:2]
+LINE 425 : 2021-10-06 06:22:29,570 [DEBUG   ] parse_part from 1 to 2 (to 1 in part parser)
+LINE 339 : 2021-10-06 06:22:29,571 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:22:31,665 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:22:31,666 [DEBUG   ] line_lengths old: 2; new: 2
+LINE 297 : 2021-10-06 06:22:31,666 [DEBUG   ] -> code[equal] old[1:1] new[1:1]
+LINE 380 : 2021-10-06 06:22:31,666 [DEBUG   ] copy old[1:1] new[1:1]
+LINE 297 : 2021-10-06 06:22:31,667 [DEBUG   ] -> code[replace] old[2:2] new[2:2]
+LINE 425 : 2021-10-06 06:22:31,671 [DEBUG   ] parse_part from 2 to 2 (to 1 in part parser)
+LINE 339 : 2021-10-06 06:22:31,672 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:22:32,014 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:22:32,015 [DEBUG   ] line_lengths old: 2; new: 2
+LINE 297 : 2021-10-06 06:22:32,015 [DEBUG   ] -> code[equal] old[1:1] new[1:1]
+LINE 380 : 2021-10-06 06:22:32,015 [DEBUG   ] copy old[1:1] new[1:1]
+LINE 297 : 2021-10-06 06:22:32,016 [DEBUG   ] -> code[replace] old[2:2] new[2:2]
+LINE 425 : 2021-10-06 06:22:32,020 [DEBUG   ] parse_part from 2 to 2 (to 1 in part parser)
+LINE 339 : 2021-10-06 06:22:32,021 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:22:32,125 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:22:32,125 [DEBUG   ] line_lengths old: 2; new: 2
+LINE 297 : 2021-10-06 06:22:32,125 [DEBUG   ] -> code[equal] old[1:1] new[1:1]
+LINE 380 : 2021-10-06 06:22:32,126 [DEBUG   ] copy old[1:1] new[1:1]
+LINE 297 : 2021-10-06 06:22:32,126 [DEBUG   ] -> code[replace] old[2:2] new[2:2]
+LINE 425 : 2021-10-06 06:22:32,131 [DEBUG   ] parse_part from 2 to 2 (to 1 in part parser)
+LINE 339 : 2021-10-06 06:22:32,131 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:22:32,937 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:22:32,938 [DEBUG   ] line_lengths old: 2; new: 2
+LINE 297 : 2021-10-06 06:22:32,938 [DEBUG   ] -> code[equal] old[1:1] new[1:1]
+LINE 380 : 2021-10-06 06:22:32,938 [DEBUG   ] copy old[1:1] new[1:1]
+LINE 297 : 2021-10-06 06:22:32,938 [DEBUG   ] -> code[replace] old[2:2] new[2:2]
+LINE 425 : 2021-10-06 06:22:32,941 [DEBUG   ] parse_part from 2 to 2 (to 1 in part parser)
+LINE 339 : 2021-10-06 06:22:32,941 [DEBUG   ] diff parser end
+LINE 501 : 2021-10-06 06:22:36,007 [INFO    ] Parsing data files for GSEA.............................
+LINE 231 : 2021-10-06 06:22:36,008 [DEBUG   ] Starting new HTTP connection (1): amp.pharm.mssm.edu:80
+LINE 461 : 2021-10-06 06:22:36,041 [DEBUG   ] http://amp.pharm.mssm.edu:80 "GET /Enrichr/datasetStatistics HTTP/1.1" 307 171
+LINE 975 : 2021-10-06 06:22:36,046 [DEBUG   ] Starting new HTTPS connection (1): maayanlab.cloud:443
+LINE 461 : 2021-10-06 06:22:36,134 [DEBUG   ] https://maayanlab.cloud:443 "GET /Enrichr/datasetStatistics HTTP/1.1" 200 None
+LINE 166 : 2021-10-06 06:22:36,159 [INFO    ] Enrichr library gene sets already downloaded in: /u/davidm/.cache/gseapy, use local file
+LINE 135 : 2021-10-06 06:22:38,170 [INFO    ] 0472 gene_sets have been filtered out when max_size=500 and min_size=15
+LINE 139 : 2021-10-06 06:22:38,170 [ERROR   ] No gene sets passed through filtering condition!!!, try new parameters again!
+Note: check gene name, gmt file format, or filtering size.
+LINE 282 : 2021-10-06 06:22:42,708 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:22:42,709 [DEBUG   ] line_lengths old: 2; new: 2
+LINE 297 : 2021-10-06 06:22:42,709 [DEBUG   ] -> code[equal] old[1:1] new[1:1]
+LINE 380 : 2021-10-06 06:22:42,709 [DEBUG   ] copy old[1:1] new[1:1]
+LINE 297 : 2021-10-06 06:22:42,709 [DEBUG   ] -> code[replace] old[2:2] new[2:2]
+LINE 425 : 2021-10-06 06:22:42,711 [DEBUG   ] parse_part from 2 to 2 (to 1 in part parser)
+LINE 339 : 2021-10-06 06:22:42,711 [DEBUG   ] diff parser end
+LINE 501 : 2021-10-06 06:22:45,072 [INFO    ] Parsing data files for GSEA.............................
+LINE 231 : 2021-10-06 06:22:45,073 [DEBUG   ] Starting new HTTP connection (1): amp.pharm.mssm.edu:80
+LINE 461 : 2021-10-06 06:22:45,105 [DEBUG   ] http://amp.pharm.mssm.edu:80 "GET /Enrichr/datasetStatistics HTTP/1.1" 307 171
+LINE 975 : 2021-10-06 06:22:45,109 [DEBUG   ] Starting new HTTPS connection (1): maayanlab.cloud:443
+LINE 461 : 2021-10-06 06:22:45,198 [DEBUG   ] https://maayanlab.cloud:443 "GET /Enrichr/datasetStatistics HTTP/1.1" 200 None
+LINE 166 : 2021-10-06 06:22:45,222 [INFO    ] Enrichr library gene sets already downloaded in: /u/davidm/.cache/gseapy, use local file
+LINE 135 : 2021-10-06 06:22:47,230 [INFO    ] 0472 gene_sets have been filtered out when max_size=500 and min_size=15
+LINE 139 : 2021-10-06 06:22:47,230 [ERROR   ] No gene sets passed through filtering condition!!!, try new parameters again!
+Note: check gene name, gmt file format, or filtering size.
+LINE 501 : 2021-10-06 06:23:01,884 [INFO    ] Parsing data files for GSEA.............................
+LINE 231 : 2021-10-06 06:23:01,885 [DEBUG   ] Starting new HTTP connection (1): amp.pharm.mssm.edu:80
+LINE 461 : 2021-10-06 06:23:01,918 [DEBUG   ] http://amp.pharm.mssm.edu:80 "GET /Enrichr/datasetStatistics HTTP/1.1" 307 171
+LINE 975 : 2021-10-06 06:23:01,922 [DEBUG   ] Starting new HTTPS connection (1): maayanlab.cloud:443
+LINE 461 : 2021-10-06 06:23:02,009 [DEBUG   ] https://maayanlab.cloud:443 "GET /Enrichr/datasetStatistics HTTP/1.1" 200 None
+LINE 166 : 2021-10-06 06:23:02,034 [INFO    ] Enrichr library gene sets already downloaded in: /u/davidm/.cache/gseapy, use local file
+LINE 135 : 2021-10-06 06:23:02,593 [INFO    ] 0050 gene_sets have been filtered out when max_size=500 and min_size=15
+LINE 139 : 2021-10-06 06:23:02,593 [ERROR   ] No gene sets passed through filtering condition!!!, try new parameters again!
+Note: check gene name, gmt file format, or filtering size.
+LINE 282 : 2021-10-06 06:23:40,240 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:40,240 [DEBUG   ] line_lengths old: 2; new: 1
+LINE 297 : 2021-10-06 06:23:40,240 [DEBUG   ] -> code[replace] old[1:2] new[1:1]
+LINE 425 : 2021-10-06 06:23:40,243 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:40,243 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:40,521 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:40,522 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:40,522 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:40,525 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:40,525 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:41,093 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:41,094 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:41,094 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:41,096 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:41,097 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:41,237 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:41,237 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:41,237 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:41,240 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:41,240 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:43,952 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:43,952 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:43,952 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:43,956 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:43,956 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:45,530 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:45,531 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:45,531 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:45,533 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:45,534 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:45,846 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:45,846 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:45,846 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:45,849 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:45,849 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:46,194 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:46,195 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:46,195 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:46,197 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:46,197 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:46,697 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:46,698 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:46,698 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:46,700 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:46,701 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:47,007 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:47,007 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:47,007 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:47,010 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:47,011 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:49,229 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:49,230 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:49,230 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:49,233 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:49,233 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:49,386 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:49,387 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:49,387 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:49,390 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:49,390 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:49,764 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:49,764 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:49,764 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:49,767 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:49,767 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:49,815 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:49,816 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:49,816 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:49,819 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:49,819 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:23:50,047 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:23:50,048 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:23:50,048 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:23:50,051 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:23:50,051 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:24:05,951 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:24:05,952 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:24:05,952 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:24:05,952 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:24:05,953 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:24:06,059 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:24:06,059 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:24:06,059 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:24:06,059 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:24:06,060 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:24:15,177 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:24:15,177 [DEBUG   ] line_lengths old: 1; new: 1
+LINE 297 : 2021-10-06 06:24:15,178 [DEBUG   ] -> code[replace] old[1:1] new[1:1]
+LINE 425 : 2021-10-06 06:24:15,180 [DEBUG   ] parse_part from 1 to 1 (to 0 in part parser)
+LINE 339 : 2021-10-06 06:24:15,181 [DEBUG   ] diff parser end
+LINE 282 : 2021-10-06 06:24:45,005 [DEBUG   ] diff parser start
+LINE 293 : 2021-10-06 06:24:45,006 [DEBUG   ] line_lengths old: 1; new: 2
+LINE 297 : 2021-10-06 06:24:45,006 [DEBUG   ] -> code[replace] old[1:1] new[1:2]
+LINE 425 : 2021-10-06 06:24:45,008 [DEBUG   ] parse_part from 1 to 2 (to 1 in part parser)
+LINE 339 : 2021-10-06 06:24:45,008 [DEBUG   ] diff parser end
+LINE 99  : 2021-10-06 06:24:56,772 [WARNING ] Input gene rankings contains duplicated IDs, Only use the duplicated ID with highest value!
+LINE 102 : 2021-10-06 06:24:56,786 [DEBUG   ] Dups list:
+               0         1
+6182   ARHGAP11B   2.31827
+14847     PDE11A         0
+17146     SMIM40         0
+18342     GUCA1A         0
+1921       MATR3 -0.164285
+4550        GGT1 -0.350819
+6873     TMSB15B -0.462823
+1575        SOD2  -1.92032
+1681        TBCE  -2.47757
+1219     POLR2J3  -2.63674
+12036       AHRR  -20.2734
+10217      PINX1  -20.3042
+5405       ABCF2  -22.7348
+3795      HSPA14  -24.0617
+LINE 501 : 2021-10-06 06:24:56,797 [INFO    ] Parsing data files for GSEA.............................
+LINE 231 : 2021-10-06 06:24:56,799 [DEBUG   ] Starting new HTTP connection (1): amp.pharm.mssm.edu:80
+LINE 461 : 2021-10-06 06:24:56,833 [DEBUG   ] http://amp.pharm.mssm.edu:80 "GET /Enrichr/datasetStatistics HTTP/1.1" 307 171
+LINE 975 : 2021-10-06 06:24:56,837 [DEBUG   ] Starting new HTTPS connection (1): maayanlab.cloud:443
+LINE 461 : 2021-10-06 06:24:56,928 [DEBUG   ] https://maayanlab.cloud:443 "GET /Enrichr/datasetStatistics HTTP/1.1" 200 None
+LINE 166 : 2021-10-06 06:24:56,954 [INFO    ] Enrichr library gene sets already downloaded in: /u/davidm/.cache/gseapy, use local file
+LINE 135 : 2021-10-06 06:24:59,775 [INFO    ] 0000 gene_sets have been filtered out when max_size=500 and min_size=15
+LINE 505 : 2021-10-06 06:24:59,775 [INFO    ] 0050 gene_sets used for further statistical testing.....
+LINE 506 : 2021-10-06 06:24:59,775 [INFO    ] Start to run GSEA...Might take a while..................
+LINE 465 : 2021-10-06 06:24:59,775 [DEBUG   ] Start to compute enrichment scores......................
+LINE 489 : 2021-10-06 06:24:59,775 [DEBUG   ] Start to compute es and esnulls........................

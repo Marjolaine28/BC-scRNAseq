@@ -1,0 +1,36 @@
+1634730237689	geckodriver	INFO	Listening on 127.0.0.1:47625
+1634730238606	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileojUraF"
+*** You are running in headless mode.
+1634730239112	addons.webextension.doh-rollout@mozilla.org	WARN	Loading extension 'doh-rollout@mozilla.org': Reading manifest: Invalid extension permission: networkStatus
+1634730239187	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1634730239187	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1634730239188	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1634730239188	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+[2021-10-20T11:43:59Z ERROR audio_thread_priority::rt_linux] setrlimit64: 1
+1634730240517	Marionette	INFO	Listening on port 35633
+1634730240616	Marionette	WARN	TLS certificate errors will be ignored for this session
+1634730241686	Marionette	INFO	Stopped listening on port 35633
+1634737792380	geckodriver	INFO	Listening on 127.0.0.1:54813
+1634737793369	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileqONIJV"
+*** You are running in headless mode.
+1634737793763	addons.webextension.doh-rollout@mozilla.org	WARN	Loading extension 'doh-rollout@mozilla.org': Reading manifest: Invalid extension permission: networkStatus
+1634737793836	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1634737793837	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1634737793837	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1634737793837	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+[2021-10-20T13:49:54Z ERROR audio_thread_priority::rt_linux] setrlimit64: 1
+1634737794938	Marionette	INFO	Listening on port 40633
+1634737794979	Marionette	WARN	TLS certificate errors will be ignored for this session
+1634737796035	Marionette	INFO	Stopped listening on port 40633
+1635153847437	geckodriver	INFO	Listening on 127.0.0.1:52483
+1635153848358	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileZm5V1D"
+*** You are running in headless mode.
+1635153848850	addons.webextension.doh-rollout@mozilla.org	WARN	Loading extension 'doh-rollout@mozilla.org': Reading manifest: Invalid extension permission: networkStatus
+1635153848926	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1635153848926	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1635153848926	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1635153848926	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+[2021-10-25T09:24:09Z ERROR audio_thread_priority::rt_linux] setrlimit64: 1
+1635153850291	Marionette	INFO	Listening on port 37549
+1635153850380	Marionette	WARN	TLS certificate errors will be ignored for this session
+1635153852401	Marionette	INFO	Stopped listening on port 37549

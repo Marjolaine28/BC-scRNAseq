@@ -44,8 +44,17 @@ done
 
 # Create decoys and gentrome
 
-mkdir -p $output_folder
 
-grep "^>" <(zcat $reference_genome) | cut -d " " -f 1 > $output_folder/decoys.txt
-sed -i -e 's/>//g' $output_folder/decoys.txt
-cat $reference_transcriptome $reference_genome > $output_folder/gentrome.fa.gz
+if [[ -f $output_folder/decoys.txt && ! -f $output_folder/gentrome.fa ]] 
+then
+    echo "Decoys already generated.
+
+    "
+    exit 1
+else
+    mkdir -p $output_folder
+
+    grep "^>" <(zcat $reference_genome) | cut -d " " -f 1 > $output_folder/decoys.txt
+    sed -i -e 's/>//g' $output_folder/decoys.txt
+    cat $reference_transcriptome $reference_genome > $output_folder/gentrome.fa.gz
+fi

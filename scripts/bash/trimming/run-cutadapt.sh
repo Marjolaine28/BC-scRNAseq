@@ -54,12 +54,6 @@ do
 done
 
 
-####### IF A PATH TO CUTADAPT IS SET WITH -P, ADD IT TO $PATH #######
-
-if [[ -n $cutadapt ]] || [[ $cutadapt != 'def' ]]
-then
-        export PATH="$cutadapt/bin:$PATH"
-fi
 
 ### GET SAMPLE NAME
 
@@ -68,7 +62,18 @@ sname=${sname[*]: -2:1}
 
 
 
-####### EMPTY MODE TO ONLY CREATE EMPTY OUTPUT FILES AND FOLDERS -- useful for qsub-all-fastq.sh #######
+### DON'T OVERWRITE TRIMMED FASTQS
+
+if [[ -s "$output_path/$sname/trimmed-$(basename $input_r1)" ]]
+then 
+   echo "Already performed trimming."
+   exit 1
+fi
+
+
+
+
+####### EMPTY MODE TO ONLY CREATE EMPTY OUTPUT FILES AND FOLDERS -- useful for qsub-all-fastq.sh (holding jobs) #######
 
 emp=${emp:-'0'}
 
@@ -83,8 +88,19 @@ then
         then
                 touch $output_path/$sname/trimmed-$(basename $input_r1)
  	fi
-	exit 1
+	exit 0
 fi
+
+
+
+
+####### IF A PATH TO CUTADAPT IS SET WITH -P, ADD IT TO $PATH #######
+
+if [[ -n $cutadapt ]] || [[ $cutadapt != 'def' ]]
+then
+        export PATH="$cutadapt/bin:$PATH"
+fi
+
 
 
 ####### CREATE LOG FILE FOR THIS SCRIPT #######

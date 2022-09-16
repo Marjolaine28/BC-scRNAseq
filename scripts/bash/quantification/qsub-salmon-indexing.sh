@@ -74,6 +74,6 @@ do
     then
         echo "if [[ -n $salmon ]]; then export PATH="$salmon/bin:$PATH"; fi; salmon index -k $k -t $transcriptome -d $decoys -i $output_folder/index_k$k $args" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_folder/logs/ -N salmon_index_k${k}_decoys
     else
-        echo "if [[ -n $salmon ]]; then export PATH="$salmon/bin:$PATH"; fi; salmon index -k $k -t $transcriptome -i $output_folder/index_k$k $args" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_folder/logs/ -N salmon_index_k${k}
+        echo "if [[ -n $salmon ]]; then export PATH="$salmon/bin:$PATH"; fi; salmon index -k $k -t $transcriptome -i $output_folder/index_k$k $args" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_folder/logs/ -N salmon_index_k${k}_no-decoys
     fi
 done

@@ -71,13 +71,33 @@ then
 fi
 
 
-####### CREATE LOG FILE FOR THIS SCRIPT #######
+####### GET SAMPLE NAME #######
 
 IFS='/' read -ra sname <<< $input_r1
-sname=${sname[*]: -2:1}                                                                                     ### get sample name
+sname=${sname[*]: -2:1}
+IFS='_' read -ra rname <<< $(basename $input_r1)
+rname=${rname[*]: 0:1}
+if [[ $sname != $rname ]] ; then sname=$sname/$rname; fi                                                    ### get sample name
+
+
+####### CHECK IF ANALYSIS WAS ALREADY PERFORMED #######
+
+if [[ -f $output_folder/$sname/alevin/quants_mat.gz ]]
+then 
+    echo "$output_folder/$sname/alevin/quants_mat.gz already exists.
+    
+    
+    "
+    exit 1
+fi
+    
+
+####### CREATE LOG FILE #######
+
 mkdir -p $output_folder/$sname/logs/						                                                ### create log folder 
 log_file=$output_folder/$sname/logs/$(basename $0)_log.txt
 touch $log_file
+
 
 echo "$(date)
 

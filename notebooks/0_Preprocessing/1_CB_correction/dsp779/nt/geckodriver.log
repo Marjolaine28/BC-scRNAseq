@@ -1,0 +1,51 @@
+1626260780775	geckodriver	INFO	Listening on 127.0.0.1:48809
+1626260781712	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilepZNOP0"
+*** You are running in headless mode.
+1626260782296	addons.webextension.doh-rollout@mozilla.org	WARN	Loading extension 'doh-rollout@mozilla.org': Reading manifest: Invalid extension permission: networkStatus
+1626260782374	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1626260782374	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1626260782374	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1626260782374	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+[2021-07-14T11:06:23Z ERROR audio_thread_priority::rt_linux] setrlimit64: 1
+1626260783892	Marionette	INFO	Listening on port 45694
+1626260783922	Marionette	WARN	TLS certificate errors will be ignored for this session
+1626260785075	Marionette	INFO	Stopped listening on port 45694
+1627336236627	geckodriver	INFO	Listening on 127.0.0.1:54374
+1627336237555	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofilehDBPak"
+*** You are running in headless mode.
+1627336238238	addons.webextension.doh-rollout@mozilla.org	WARN	Loading extension 'doh-rollout@mozilla.org': Reading manifest: Invalid extension permission: networkStatus
+1627336238320	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1627336238320	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1627336238320	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1627336238320	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+[2021-07-26T21:50:39Z ERROR audio_thread_priority::rt_linux] setrlimit64: 1
+1627336240130	Marionette	INFO	Listening on port 36819
+1627336240165	Marionette	WARN	TLS certificate errors will be ignored for this session
+1627336241398	Marionette	INFO	Stopped listening on port 36819
+1627387226965	geckodriver	INFO	Listening on 127.0.0.1:59202
+1627387227877	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofiletrrhx6"
+*** You are running in headless mode.
+1627387228533	addons.webextension.doh-rollout@mozilla.org	WARN	Loading extension 'doh-rollout@mozilla.org': Reading manifest: Invalid extension permission: networkStatus
+1627387228645	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1627387228645	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1627387228645	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1627387228645	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+[2021-07-27T12:00:29Z ERROR audio_thread_priority::rt_linux] setrlimit64: 1
+1627387230107	Marionette	INFO	Listening on port 32941
+1627387230188	Marionette	WARN	TLS certificate errors will be ignored for this session
+1627387231434	Marionette	INFO	Stopped listening on port 32941
+1633516629236	geckodriver	INFO	Listening on 127.0.0.1:40376
+1633516630163	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "--marionette" "--headless" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofileYcK2gS"
+*** You are running in headless mode.
+1633516630684	addons.webextension.doh-rollout@mozilla.org	WARN	Loading extension 'doh-rollout@mozilla.org': Reading manifest: Invalid extension permission: networkStatus
+1633516630767	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: mozillaAddons
+1633516630768	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: telemetry
+1633516630768	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: resource://pdf.js/
+1633516630768	addons.webextension.screenshots@mozilla.org	WARN	Loading extension 'screenshots@mozilla.org': Reading manifest: Invalid extension permission: about:reader*
+[2021-10-06T10:37:11Z ERROR audio_thread_priority::rt_linux] setrlimit64: 1
+1633516632069	Marionette	INFO	Listening on port 46405
+1633516632077	Marionette	WARN	TLS certificate errors will be ignored for this session
+1633516633213	Marionette	INFO	Stopped listening on port 46405
+
+###!!! [Parent][MessageChannel] Error: (msgtype=0x8000E,name=PBackgroundIDBDatabase::Msg_CloseAfterInvalidationComplete) Channel error: cannot send/recv
+

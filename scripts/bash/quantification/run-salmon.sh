@@ -62,7 +62,7 @@ emp=${emp:-'0'}             # 0 by default
 
 if [[ $emp = 1 ]]
 then
-	exit 1
+	exit 0
 fi
 
 
@@ -74,18 +74,35 @@ then
 fi
 
 
-####### CREATE LOG FILE FOR THIS SCRIPT #######
+####### GET SAMPLE NAME #######
 
 IFS='/' read -ra sname <<< $input_r1
-sname=${sname[*]: -2:1}                                                                                     ### get sample name
+sname=${sname[*]: -2:1}
+
+
+####### CHECK IF ANALYSIS WAS ALREADY PERFORMED #######
+
+if [[ -f $output_folder/$sname/quant.genes.sf ]]
+then 
+    echo "$output_folder/$sname/quant.genes.sf already exists.
+    
+    
+    "
+    exit 1
+fi
+    
+
+####### CREATE LOG FILE #######
+
 mkdir -p $output_folder/$sname/logs/						                                                ### create log folder 
 log_file=$output_folder/$sname/logs/$(basename $0)_log.txt
 touch $log_file
 
+
 echo "$(date)
 
 ################################################################
-########### Alevin quantification of scRNA-seq reads ###########
+########### Salmon quantification of RNA-seq reads ###########
 ################################################################
 
 Salmon version : $(salmon --v)
