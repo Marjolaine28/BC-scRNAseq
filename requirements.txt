@@ -85,9 +85,7 @@ jupyter-highlight-selected-word==0.2.0
 jupyter-latex-envs==1.4.6
 jupyter-nbextensions-configurator==0.4.1
 jupyterlab-widgets==1.0.0
-Keras==2.4.3
 kiwisolver==1.2.0
-kopt==0.1.0
 lazy-object-proxy==1.4.3
 legacy-api-wrap==1.2
 leidenalg==0.8.7
@@ -184,9 +182,6 @@ testpath==0.4.4
 texttable==1.6.2
 threadpoolctl==2.1.0
 toml==0.10.1
-torch==1.7.0+cu101
-torchaudio==0.7.0
-torchvision==0.8.1+cu101
 tornado==6.0.4
 tqdm==4.48.0
 traitlets==4.3.3
