@@ -33,3 +33,11 @@ then
 else
     echo "Pipelines already installed."
 fi
+
+
+############################## CREATE PYTHON ENVIRONMENT AND INSTALL PACKAGES ##############################
+
+python3 -m venv $(git root)/pipelines/cutadapt/python368_venv
+source $(git root)/pipelines/cutadapt/bin/activate
+python3 -m pip install -r requirements.txt
+
