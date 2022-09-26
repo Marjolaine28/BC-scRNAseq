@@ -30,9 +30,15 @@ then
     tar -xvf $(git root)/pipelines/salmon/salmon-1.4.0_linux_x86_64.tar.gz -C $(git root)/pipelines/salmon
     rm $(git root)/pipelines/salmon/salmon-1.4.0_linux_x86_64.tar.gz
     mv $(git root)/pipelines/salmon/salmon-latest_linux_x86_64/ $(git root)/pipelines/salmon/salmon-1.4.0
+
+    ## SRA Toolkit
+    wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-centos_linux64.tar.gz -P $(git root)/pipelines/sratoolkit
+    tar -xvf $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz -C $(git root)/pipelines/sratoolkit
+    rm $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz
 else
     echo "Pipelines already installed."
 fi
+
 
 
 ############################## CREATE PYTHON ENVIRONMENT AND INSTALL PACKAGES ##############################

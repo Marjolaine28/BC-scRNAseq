@@ -1,9 +1,9 @@
 #!/bin/bash
 
 torque=${1:-"0"}
-data_path=${2:-"$(git root)/BC-Cell-Lines_project/data"}
+data_path=${2:-"$(git root)/data/iric"}
 scripts_path=${3:-"$(git root)/scripts"}
-references_path=${4:-"$(git root)/references"}
+references_path=${4:-"$(git root)/data/references"}
 pipelines_path=${5:-"$(git root)/pipelines"}
 key=${6:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
 
@@ -53,15 +53,15 @@ arrayGet() {
 project_IDs=(762 779 992 1090)
 
 
-# for p in ${project_IDs[@]}
-# do
-#     # wget --no-check-certificate -O - \
-#     # "https://genomique.iric.ca/FastQList?key=${key}&projectID=$p&wget=1" \
-#     # | wget --no-check-certificate -P $data_path/dsp$p/downloaded -cri -
+for p in ${project_IDs[@]}
+do
+    wget --no-check-certificate -O - \
+    "https://genomique.iric.ca/FastQList?key=${key}&projectID=$p&wget=1" \
+    | wget --no-check-certificate -P $data_path/dsp$p/downloaded -cri -
 
-#     merge-fastq-iric.sh $data_path/dsp$p/downloaded $data_path/dsp$p/raw-fastqs
+    merge-fastq-iric.sh $data_path/dsp$p/downloaded $data_path/dsp$p/raw-fastqs
 
-# done
+done
 
 
 
@@ -78,12 +78,12 @@ project_IDs=(762 779 992 1090)
 assembly=human/assembly__GRCh38-hg38
 annot=annotation__gencode/gencode_34
 
-if [[ ! -d $(git root)/references ]]; 
+if [[ ! -d $references_path ]]; 
 then 
-    mkdir -p $(git root)/references
+    mkdir -p $references_path
 
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.transcripts.fa.gz -P $(git root)/references/$assembly/$annot
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $(git root)/references/$assembly
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.transcripts.fa.gz -P $references_path/$assembly/$annot
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $references_path/$assembly
 else
     echo "References already available."
 fi
@@ -151,7 +151,7 @@ then
 fi 
 
 
-kmers=(17 19 23 25 27 29 31) 
+kmers=(17 19 23 27 29 31) 
 for k in ${kmers[@]} 
 do
     if [[ -d $output_folder_index/decoys/index_k$k ]] 
@@ -268,9 +268,138 @@ done
 
 
 
-##########################################################################
-############################## WHITELISTING ##############################
-##########################################################################
+
+
+
+
+#################################################################
+##################### PARAMETERS COMPARISON #####################
+#################################################################
+
+
+
+# Decoys, trimming & default parameters + mt_genes + rrna genes  #### EDIT : run on all samples
+
+for p in ${project_IDs[@]}
+do
+
+    if [[ $p = 1090 ]]
+    then
+        wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_gfp_k19)"
+        mapping_params="EGFP-decoys-k19-1.4.0"
+        index="EGFP-decoys"
+        txp2gene="biomart_ens100/gencode.v34.EGFP_transcripts_txp2gene.tsv"
+
+    else
+        wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_k19)" 
+        mapping_params="decoys-k19-1.4.0"
+        index="decoys"
+        txp2gene="biomart_ens100/gencode.v34.transcripts_txp2gene.tsv"
+    fi
+
+
+    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $references_path/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
+
+    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
+    -o $data_path/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/default -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 -args "$args"
+
+done
+
+
+
+
+# Decoys, trimming, forceCells 3000 & different kmer sizes 
+
+
+for i in ${!kmers[@]}
+do
+    k=${kmers[$i]}
+    pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index decoys_k$k)"
+    $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/trimmed-fastqs/cutadapt-all \
+    -o $data_path/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/decoys-k$k-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
+    -args "-l ISR -i $output_folder_index/decoys/index_k$k --tgMap $references_path/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
+    --dropseq --dumpMtx --dumpFeatures --forceCells 3000 --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
+done
+
+
+
+
+# # Decoys, no trimming, forceCells 3000 & different kmer sizes 
+
+# for i in ${!kmers[@]}
+# do
+#     k=${kmers[$i]}
+#     pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index decoys_k$k)"
+#     $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/raw-fastqs \
+#     -o $data_path/dsp779/quant/alevin/$assembly/$annot/raw-reads/decoys-k$k-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
+#     -args "-l ISR -i $output_folder_index/decoys/index_k$k --tgMap $references_path/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
+#     --dropseq --dumpMtx --dumpFeatures --forceCells 3000 --noWhitelist"
+# done
+
+
+
+
+# No decoys, k19 & forceCells 3000
+
+pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index  no_decoys_k19)"
+$submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/trimmed-fastqs/cutadapt-all \
+-o $data_path/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/no-decoys-k19-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
+-args "-l ISR -i $output_folder_index/no-decoys/index_k19 --tgMap $references_path/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
+--dropseq --dumpMtx --dumpFeatures --forceCells 3000 --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
+
+
+
+
+# Decoys, k19 & forceCells 400 ER1 sample
+
+$submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/trimmed-fastqs/cutadapt-all \
+    -o $data_path/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/decoys-k19-1.4.0/forceCells-400 -l "PE" -s "Sample_N705_-_ER1" -p $pipelines_path/salmon/salmon-1.4.0 \
+    -args "-l ISR -i $output_folder_index/decoys/index_k19 --tgMap $references_path/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
+    --dropseq --dumpMtx --dumpFeatures --forceCells 400 --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
+
+
+
+
+
+################# Run Alevin on all other projects using selected parameters (kmer 19, forceCells 3000, decoys)
+###############################################################################################################
+
+
+for p in ${project_IDs[@]}
+do
+    if [[ $p = 1090 ]]
+    then
+        # pid="n${pid_trim[$i]} ${pid_decoys_gfp}"    # Use also EGFP sequence to quantify dsp1090
+        pid="$(arrayGet pids_trim $p) ; $(arrayGet pids_index  k19-decoys-gfp)"
+        mapping_params="EGFP-decoys-k19-1.4.0"
+        index="EGFP-decoys"
+        txp2gene="biomart_ens100/gencode.v34.EGFP_transcripts_txp2gene.tsv"
+    else
+        # pid="n${pid_trim[$i]} ${pid_decoys[3]}"
+        pid="$(arrayGet pids_trim $p) ; $(arrayGet pids_index  k19-decoys)"
+        mapping_params="decoys-k19-1.4.0"
+        index="decoys"
+        txp2gene="biomart_ens100/gencode.v34.transcripts_txp2gene.tsv"
+    fi
+
+    $submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
+    -o $data_path/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
+    -args "-l ISR -i $output_folder_index/$index/index_k19 --tgMap $txp2gene \
+    --dropseq --dumpMtx --dumpFeatures --forceCells 3000"
+done
+
+
+
+
+
+
+
+
+
+
+##############################################################################
+############################## NEW WHITELISTING ##############################
+##############################################################################
 
 
 
@@ -280,8 +409,7 @@ do
     $submit -w 00:30:00 -m 5gb -h "$wait_pid" -r $scripts_path/bash/whitelisting/get_cb_whitelist.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
     -o $data_path/dsp$p/trimmed-fastqs/cutadapt-all  -s "all" -p $scripts_path/python/rnaseq/whitelisting.py -savepids 1 -args "--top=3000"
     
-    if [[ $torque = 1 && -s "~/tmp/qsub_pids/pids.txt" ]]
-    then
+    if [[ $torque = 1 && -s "~/tmp/qsub_pids/pids.txt" ]]; then
         sample=$(cut -f1 -d ' ' ~/tmp/qsub_pids/pids.txt)
         pid=$(cut -f2 -d ' ' ~/tmp/qsub_pids/pids.txt)
         echo $pid
@@ -295,28 +423,28 @@ done
 
 
 
-############################################################################
-############################## QUANTIFICATION ##############################
-############################################################################
+
+#################################################################################################################################
+############################## FINAL MAPPING & QUANT (with selected parameters and new whitelist) ###############################
+#################################################################################################################################
 
 
 
 for p in ${project_IDs[@]}
 do
 
-    if [[ $p = 1090 ]]
-    then
+    if [[ $p = 1090 ]]; then
         wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_gfp_k19)"
         mapping_params="EGFP-decoys-k19-1.4.0"
         index="EGFP-decoys"
-        txp2gene="biomart_ens100/txp2gene_biomart_ens100_EGFP.tsv"   #"gencode.v34.EGFP_transcripts_txp2gene.tsv"
+        txp2gene="biomart_ens100/gencode.v34.EGFP_transcripts_txp2gene.tsv"
 
     else
         wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_k19)"
         echo $wait_pid
         mapping_params="decoys-k19-1.4.0"
         index="decoys"
-        txp2gene="biomart_ens100/txp2gene_biomart_ens100.tsv"
+        txp2gene="biomart_ens100/gencode.v34.transcripts_txp2gene.tsv"
     fi
 
     args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $references_path/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --customWhitelist" # --writeMappings=mapping.sam
@@ -332,122 +460,20 @@ done
 
 
 
+################################################################################
+##############################  MAPPING BULK DATA ##############################
+################################################################################
 
 
 
 
 
-######################################################
-################# Compare parameters #################
-######################################################
-
-
-# Decoys (recommanded), trimming & default parameters + mt_genes + rrna genes  #### EDIT : run on all samples
-
-for p in ${project_IDs[@]}
-do
-
-    if [[ $p = 1090 ]]
-    then
-        wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_gfp_k19)"
-        mapping_params="EGFP-decoys-k19-1.4.0"
-        index="EGFP-decoys"
-        txp2gene="biomart_ens100/txp2gene_biomart_ens100_EGFP.tsv"   #"gencode.v34.EGFP_transcripts_txp2gene.tsv"
-
-    else
-        wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_k19)" 
-        mapping_params="decoys-k19-1.4.0"
-        index="decoys"
-        txp2gene="biomart_ens100/txp2gene_biomart_ens100.tsv"
-    fi
-
-
-    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $references_path/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
-
-    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
-    -o $data_path/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/default -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 -args "$args"
-
-done
 
 
 
-
-
-# Decoys, trimming, forceCells 3000 & different kmer sizes 
-
-
-for i in ${!kmers[@]}
-do
-    k=${kmers[$i]}
-    pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index decoys_k$k)"
-    $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/trimmed-fastqs/cutadapt-all \
-    -o $data_path/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/decoys-k$k-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
-    -args "-l ISR -i $output_folder_index/decoys/index_k$k --tgMap $references_path/$assembly/$annot/biomart_ens100/txp2gene_biomart_ens100.tsv \
-    --dropseq --dumpMtx --dumpFeatures --forceCells 3000 --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
-done
-
-
-
-# Decoys, no trimming, forceCells 3000 & different kmer sizes 
-
-for i in ${!kmers[@]}
-do
-    k=${kmers[$i]}
-    pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index decoys_k$k)"
-    $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/raw-fastqs \
-    -o $data_path/dsp779/quant/alevin/$assembly/$annot/raw-reads/decoys-k$k-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
-    -args "-l ISR -i $output_folder_index/decoys/index_k$k --tgMap $references_path/$assembly/$annot/biomart_ens100/txp2gene_biomart_ens100.tsv \
-    --dropseq --dumpMtx --dumpFeatures --forceCells 3000 --noWhitelist"
-done
-
-
-
-# No decoys, k19 & forceCells 3000
-
-pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index  no_decoys_k19)"
-$submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/trimmed-fastqs/cutadapt-all \
--o $data_path/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/no-decoys-k19-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
--args "-l ISR -i $output_folder_index/no-decoys/index_k19 --tgMap $references_path/$assembly/$annot/biomart_ens100/txp2gene_biomart_ens100.tsv \
---dropseq --dumpMtx --dumpFeatures --forceCells 3000 --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
-
-
-# Decoys, k19 & forceCells 400 ER1 sample
-
-$submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/trimmed-fastqs/cutadapt-all \
-    -o $data_path/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/decoys-k19-1.4.0/forceCells-400 -l "PE" -s "Sample_N705_-_ER1" -p $pipelines_path/salmon/salmon-1.4.0 \
-    -args "-l ISR -i $output_folder_index/decoys/index_k19 --tgMap $references_path/$assembly/$annot/biomart_ens100/txp2gene_biomart_ens100.tsv \
-    --dropseq --dumpMtx --dumpFeatures --forceCells 400 --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
-
-
-# ################# Run Alevin on all other projects using selected parameters (kmer 19, forceCells 3000, decoys)             BEFORE WHITELISTING !
-# ###############################################################################################################
-
-
-# for p in ${project_IDs[@]}
-# do
-#     if [[ $p = 1090 ]]
-#     then
-#         # pid="n${pid_trim[$i]} ${pid_decoys_gfp}"    # Use also EGFP sequence to quantify dsp1090
-#         pid="$(arrayGet pids_trim $p) ; $(arrayGet pids_index  k19-decoys-gfp)"
-#         mapping_params="EGFP-decoys-k19-1.4.0"
-#         index="EGFP-decoys"
-#         txp2gene="biomart_ens100/txp2gene_biomart_ens100_EGFP.tsv"   #"gencode.v34.EGFP_transcripts_txp2gene.tsv"
-#     else
-#         # pid="n${pid_trim[$i]} ${pid_decoys[3]}"
-#         pid="$(arrayGet pids_trim $p) ; $(arrayGet pids_index  k19-decoys)"
-#         mapping_params="decoys-k19-1.4.0"
-#         index="decoys"
-#         txp2gene="biomart_ens100/txp2gene_biomart_ens100.tsv"   #"gencode.v34.transcripts_txp2gene.tsv"
-#     fi
-
-#     $submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
-#     -o $data_path/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
-#     -args "-l ISR -i $output_folder_index/$index/index_k19 --tgMap $txp2gene \
-#     --dropseq --dumpMtx --dumpFeatures --forceCells 3000"
-# done
-
-
-
+#####################################################################################
+############################## STAR ALIGNMENTS FOR IGV ##############################
+#####################################################################################
 
 
 # # Align T47D in bulk mode with STAR
