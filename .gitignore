@@ -4,3 +4,4 @@ data/public/*
 !data/public/SraRunTable.txt
 !data/public/SRR_Acc_List.txt
 pipelines/*
+!pipelines/requirements.txt
