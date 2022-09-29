@@ -3,6 +3,5 @@ data/references/*
 data/public/*
 !data/public/SraRunTable.txt
 !data/public/SRR_Acc_List.txt
-!data/iric/bulk/bulk-T47D-DSP550
 pipelines/*
 !pipelines/requirements.txt
