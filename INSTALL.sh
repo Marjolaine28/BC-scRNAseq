@@ -46,5 +46,5 @@ fi
 python3 -m venv $(git root)/pipelines/python368_venv
 source $(git root)/pipelines/python368_venv/bin/activate
 pip install --upgrade pip
-# python3 -m pip install -r requirements.txt
+# python3 -m pip install -r $(git root)/pipelines/requirements.txt
 

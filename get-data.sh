@@ -1,11 +1,10 @@
 #!/bin/bash
 
 torque=${1:-"0"}
-data_path=${2:-"$(git root)/data/iric"}
+data_path=${2:-"$(git root)/data"}
 scripts_path=${3:-"$(git root)/scripts"}
-references_path=${4:-"$(git root)/data/references"}
-pipelines_path=${5:-"$(git root)/pipelines"}
-key=${6:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
+pipelines_path=${4:-"$(git root)/pipelines"}
+key=${5:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
 
 
 
@@ -19,7 +18,8 @@ key=${6:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
 
 
 export PATH="$scripts_path/bash/utils/:$PATH" 
-export PATH="$scripts_path/bash/quantification/:$PATH" 
+export PATH="$scripts_path/bash/quantification/:$PATH"
+export PATH="$pipelines_path/sratoolkit/sratoolkit.3.0.0-centos_linux64/bin/:$PATH"
 
 if [[ $torque = 0 ]]
 then
@@ -53,14 +53,12 @@ arrayGet() {
 project_IDs=(762 779 992 1090)
 
 
-for p in ${project_IDs[@]}
-do
+for p in ${project_IDs[@]}; do
     wget --no-check-certificate -O - \
     "https://genomique.iric.ca/FastQList?key=${key}&projectID=$p&wget=1" \
-    | wget --no-check-certificate -P $data_path/dsp$p/downloaded -cri -
+    | wget --no-check-certificate -P $data_path/iric/dsp$p/downloaded -cri -
 
-    merge-fastq-iric.sh $data_path/dsp$p/downloaded $data_path/dsp$p/raw-fastqs
-
+    merge-fastq-iric.sh $data_path/iric/dsp$p/downloaded $data_path/iric/dsp$p/raw-fastqs
 done
 
 
@@ -78,12 +76,12 @@ done
 assembly=human/assembly__GRCh38-hg38
 annot=annotation__gencode/gencode_34
 
-if [[ ! -d $references_path ]]; 
+if [[ ! -d $data_path/references ]]; 
 then 
-    mkdir -p $references_path
+    mkdir -p $data_path/references
 
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.transcripts.fa.gz -P $references_path/$assembly/$annot
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $references_path/$assembly
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.transcripts.fa.gz -P $data_path/references/$assembly/$annot
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $data_path/references/$assembly
 else
     echo "References already available."
 fi
@@ -97,9 +95,9 @@ CAAGACCCGCGCCGAGGTGAAGTTCGAGGGCGACACCCTGGTGAACCGCATCGAGCTGAAGGGCATCGACTTCAAGGAGG
 ACGGCAACATCCTGGGGCACAAGCTGGAGTACAACTACAACAGCCACAACGTCTATATCATGGCCGACAAGCAGAAGAAC
 GGCATCAAGGTGAACTTCAAGATCCGCCACAACATCGAGGACGGCAGCGTGCAGCTCGCCGACCACTACCAGCAGAACAC
 CCCCATCGGCGACGGCCCCGTGCTGCTGCCCGACAACCACTACCTGAGCACCCAGTCCGCCCTGAGCAAAGACCCCAACG
-AGAAGCGCGATCACATGGTCCTGCTGGAGTTCGTGACCGCCGCCGGGATCACTCTCGGCATGGACGAGCTGTACAAGTAA" > $references_path/exogenous/EGFP/genome.EGFP.fa
-gzip $references_path/exogenous/EGFP/genome.EGFP.fa
-cat $references_path/$assembly/$annot/gencode.v34.transcripts.fa.gz $references_path/exogenous/EGFP/genome.EGFP.fa.gz > $references_path/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz
+AGAAGCGCGATCACATGGTCCTGCTGGAGTTCGTGACCGCCGCCGGGATCACTCTCGGCATGGACGAGCTGTACAAGTAA" > $data_path/references/exogenous/EGFP/genome.EGFP.fa
+gzip $data_path/references/exogenous/EGFP/genome.EGFP.fa
+cat $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz $data_path/references/exogenous/EGFP/genome.EGFP.fa.gz > $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz
 
 
 
@@ -113,13 +111,13 @@ cat $references_path/$assembly/$annot/gencode.v34.transcripts.fa.gz $references_
 ######################## GET TRANSCRIPTS TO GENES MAPPING ########################
 ##################################################################################
 
-zcat $references_path/$assembly/$annot/gencode.v34.transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $references_path/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
-sed -i 's/|/\t/g' $references_path/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
-sed -i 's/>//g' $references_path/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+zcat $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+sed -i 's/|/\t/g' $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+sed -i 's/>//g' $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
 
-echo -en 'EGFP\tEGFP' > $references_path/$assembly/$annot/tmp.tsv
-cat $references_path/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv $references_path/$assembly/$annot/tmp.tsv > $references_path/$assembly/$annot/gencode.v34.EGFP_transcripts_txp2gene.tsv
-rm $references_path/$assembly/$annot/tmp.tsv
+echo -en 'EGFP\tEGFP' > $data_path/references/$assembly/$annot/tmp.tsv
+cat $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv $data_path/references/$assembly/$annot/tmp.tsv > $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts_txp2gene.tsv
+rm $data_path/references/$assembly/$annot/tmp.tsv
 
 
 
@@ -146,8 +144,8 @@ mkdir -p $output_folder_index/decoys
 
 if [[ ! -f $output_folder_index/decoys/decoys.txt && ! -f $output_folder_index/decoys/gentrome.fa ]] 
 then
-    salmon-get-decoys.sh -g $references_path/$assembly/GRCh38.primary_assembly.genome.fa.gz \
-    -t $references_path/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/decoys
+    salmon-get-decoys.sh -g $data_path/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
+    -t $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/decoys
 fi 
 
 
@@ -189,9 +187,9 @@ else
     if [[ $torque = 0 ]]
     then
         export PATH="$pipelines_path/salmon/salmon-1.4.0/bin:$PATH"
-        salmon index -k 19 -t $references_path/$assembly/$annot/gencode.v34.transcripts.fa.gz -i $output_folder_index/no-decoys/index_k19 --gencode
+        salmon index -k 19 -t $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -i $output_folder_index/no-decoys/index_k19 --gencode
     else
-        qsub-salmon-indexing.sh -w 1:00:00 -m 10gb -t $references_path/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/decoys -k 19 -p $pipelines_path/salmon/salmon-1.4.0 -args '--gencode'
+        qsub-salmon-indexing.sh -w 1:00:00 -m 10gb -t $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/decoys -k 19 -p $pipelines_path/salmon/salmon-1.4.0 -args '--gencode'
         pids_index_no_decoys_k19=$(qstat -u $USER | tail -n 1 | awk '{print $1}' | cut -d"." -f1)
     fi
 fi
@@ -207,8 +205,8 @@ mkdir -p $output_folder_index/EGFP-decoys
 
 if [[ ! -f $output_folder_index/EGFP-decoys/decoys.txt && ! -f $output_folder_index/EGFP-decoys/gentrome.fa ]] 
 then
-    salmon-get-decoys.sh -g $references_path/$assembly/GRCh38.primary_assembly.genome.fa.gz \
-    -t $references_path/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz -o $output_folder_index/EGFP-decoys
+    salmon-get-decoys.sh -g $data_path/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
+    -t $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz -o $output_folder_index/EGFP-decoys
  fi 
 
 
@@ -244,9 +242,9 @@ fi
 
 for p in ${project_IDs[@]}
 do
-    $submit -w 03:00:00 -m 20gb -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/dsp$p/raw-fastqs -o $data_path/dsp$p/raw-fastqs -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+    $submit -w 03:00:00 -m 20gb -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/iric/dsp$p/raw-fastqs -o $data_path/iric/dsp$p/raw-fastqs -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
 
-    $submit -w 5:00:00 -m 10gb -r $scripts_path/bash/trimming/run-cutadapt.sh -f $data_path/dsp$p/raw-fastqs -o $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
+    $submit -w 5:00:00 -m 10gb -r $scripts_path/bash/trimming/run-cutadapt.sh -f $data_path/iric/dsp$p/raw-fastqs -o $data_path/iric/dsp$p/trimmed-fastqs/cutadapt-all \
     -l "PE" -s "all" -p $pipelines_path/cutadapt/cutadapt-3.2 -savepids 1 \
     -args '-m 20:20 -a CTGTCTCTTATACACATCTC;min_overlap=6 -A A{100};min_overlap=6 -A N{20}GTACTCTGCGTTGATACCACTGCTTCCGCGGACAGGCGTGTAGATCTCGGTGGTCGCCGTATCATT;min_overlap=26'
     
@@ -258,7 +256,7 @@ do
     fi
     
     wait_pid="$(arrayGet pids_trim $p)"
-    $submit -w 03:00:00 -m 20gb -h "$wait_pid" -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all -o $data_path/dsp$p/trimmed-fastqs/cutadapt-all -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+    $submit -w 03:00:00 -m 20gb -h "$wait_pid" -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/iric/dsp$p/trimmed-fastqs/cutadapt-all -o $data_path/iric/dsp$p/trimmed-fastqs/cutadapt-all -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
 done
 
 
@@ -298,10 +296,10 @@ do
     fi
 
 
-    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $references_path/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
+    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $data_path/references/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --mrna $data_path/references/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $data_path/references/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
 
-    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
-    -o $data_path/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/default -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 -args "$args"
+    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp$p/trimmed-fastqs/cutadapt-all \
+    -o $data_path/iric/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/default -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 -args "$args"
 
 done
 
@@ -315,10 +313,10 @@ for i in ${!kmers[@]}
 do
     k=${kmers[$i]}
     pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index decoys_k$k)"
-    $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/trimmed-fastqs/cutadapt-all \
-    -o $data_path/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/decoys-k$k-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
-    -args "-l ISR -i $output_folder_index/decoys/index_k$k --tgMap $references_path/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
-    --dropseq --dumpMtx --dumpFeatures --forceCells 3000 --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
+    $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp779/trimmed-fastqs/cutadapt-all \
+    -o $data_path/iric/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/decoys-k$k-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
+    -args "-l ISR -i $output_folder_index/decoys/index_k$k --tgMap $data_path/references/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
+    --dropseq --dumpMtx --dumpFeatures --forceCells 3000 --mrna $data_path/references/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $data_path/references/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
 done
 
 
@@ -330,9 +328,9 @@ done
 # do
 #     k=${kmers[$i]}
 #     pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index decoys_k$k)"
-#     $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/raw-fastqs \
-#     -o $data_path/dsp779/quant/alevin/$assembly/$annot/raw-reads/decoys-k$k-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
-#     -args "-l ISR -i $output_folder_index/decoys/index_k$k --tgMap $references_path/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
+#     $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp779/raw-fastqs \
+#     -o $data_path/iric/dsp779/quant/alevin/$assembly/$annot/raw-reads/decoys-k$k-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
+#     -args "-l ISR -i $output_folder_index/decoys/index_k$k --tgMap $data_path/references/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
 #     --dropseq --dumpMtx --dumpFeatures --forceCells 3000 --noWhitelist"
 # done
 
@@ -342,20 +340,20 @@ done
 # No decoys, k19 & forceCells 3000
 
 pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index  no_decoys_k19)"
-$submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/trimmed-fastqs/cutadapt-all \
--o $data_path/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/no-decoys-k19-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
--args "-l ISR -i $output_folder_index/no-decoys/index_k19 --tgMap $references_path/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
---dropseq --dumpMtx --dumpFeatures --forceCells 3000 --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
+$submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp779/trimmed-fastqs/cutadapt-all \
+-o $data_path/iric/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/no-decoys-k19-1.4.0/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
+-args "-l ISR -i $output_folder_index/no-decoys/index_k19 --tgMap $data_path/references/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
+--dropseq --dumpMtx --dumpFeatures --forceCells 3000 --mrna $data_path/references/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $data_path/references/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
 
 
 
 
 # Decoys, k19 & forceCells 400 ER1 sample
 
-$submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp779/trimmed-fastqs/cutadapt-all \
-    -o $data_path/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/decoys-k19-1.4.0/forceCells-400 -l "PE" -s "Sample_N705_-_ER1" -p $pipelines_path/salmon/salmon-1.4.0 \
-    -args "-l ISR -i $output_folder_index/decoys/index_k19 --tgMap $references_path/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
-    --dropseq --dumpMtx --dumpFeatures --forceCells 400 --mrna $references_path/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $references_path/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
+$submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp779/trimmed-fastqs/cutadapt-all \
+    -o $data_path/iric/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/decoys-k19-1.4.0/forceCells-400 -l "PE" -s "Sample_N705_-_ER1" -p $pipelines_path/salmon/salmon-1.4.0 \
+    -args "-l ISR -i $output_folder_index/decoys/index_k19 --tgMap $data_path/references/$assembly/$annot/biomart_ens100/gencode.v34.transcripts_txp2gene.tsv \
+    --dropseq --dumpMtx --dumpFeatures --forceCells 400 --mrna $data_path/references/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $data_path/references/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
 
 
 
@@ -382,8 +380,8 @@ do
         txp2gene="biomart_ens100/gencode.v34.transcripts_txp2gene.tsv"
     fi
 
-    $submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
-    -o $data_path/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
+    $submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp$p/trimmed-fastqs/cutadapt-all \
+    -o $data_path/iric/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/forceCells-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 \
     -args "-l ISR -i $output_folder_index/$index/index_k19 --tgMap $txp2gene \
     --dropseq --dumpMtx --dumpFeatures --forceCells 3000"
 done
@@ -406,8 +404,8 @@ done
 for p in ${project_IDs[@]}
 do
     wait_pid="$(arrayGet pids_trim $p)"
-    $submit -w 00:30:00 -m 5gb -h "$wait_pid" -r $scripts_path/bash/whitelisting/get_cb_whitelist.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
-    -o $data_path/dsp$p/trimmed-fastqs/cutadapt-all  -s "all" -p $scripts_path/python/rnaseq/whitelisting.py -savepids 1 -args "--top=3000"
+    $submit -w 00:30:00 -m 5gb -h "$wait_pid" -r $scripts_path/bash/whitelisting/get_cb_whitelist.sh -f $data_path/iric/dsp$p/trimmed-fastqs/cutadapt-all \
+    -o $data_path/iric/dsp$p/trimmed-fastqs/cutadapt-all  -s "all" -p $scripts_path/python/rnaseq/whitelisting.py -savepids 1 -args "--top=3000"
     
     if [[ $torque = 1 && -s "~/tmp/qsub_pids/pids.txt" ]]; then
         sample=$(cut -f1 -d ' ' ~/tmp/qsub_pids/pids.txt)
@@ -447,10 +445,10 @@ do
         txp2gene="biomart_ens100/gencode.v34.transcripts_txp2gene.tsv"
     fi
 
-    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $references_path/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --customWhitelist" # --writeMappings=mapping.sam
+    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $data_path/references/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --customWhitelist" # --writeMappings=mapping.sam
 
-    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/dsp$p/trimmed-fastqs/cutadapt-all \
-    -o $data_path/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/customWh-top-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 -args "$args"
+    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp$p/trimmed-fastqs/cutadapt-all \
+    -o $data_path/iric/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/${mapping_params}/customWh-top-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 -args "$args"
 
 done
 
@@ -467,6 +465,33 @@ done
 
 
 
+mkdir $data_path/public/bulk/56_cell_lines/downloaded
+
+ 
+x=$(cat SRR_Acc_List.txt) ; 
+for d in $x; do 
+    prefetch $d ; 
+    fasterq-dump --split-files $d; 
+    rm -r $d; 
+    gzip ${d}_*.fastq; 
+done
+
+sed -i -e 's/T47D Kbluc/T47D_Kbluc/g' SraRunTable.txt
+sed -i -e 's/MDAMB175/MDAMB175VII/g' SraRunTable.txt
+sed -i -e 's/SUM1315/SUM1315MO2/g' SraRunTable.txt
+
+x=($(echo $(cut -f1 -d',' SraRunTable.txt)))
+y=($(echo $(cut -f8 -d',' SraRunTable.txt)))
+
+echo ${#x[@]}
+echo ${#y[@]}
+
+for i in "${!x[@]}"; do if [[ $i != 0 ]] ; then mkdir -p ${y[$i]} ; mv ${x[$i]}*1.fastq.gz ${y[$i]}/${x[$i]}*R1.fastq.gz ; mv ${x[$i]}*2.fastq.gz ${y[$i]}/${x[$i]}*R2.fastq.gz ; fi ; done
+for i in "${!x[@]}"; do if [[ $i != 0 ]] ; then echo ${y[$i]} ; echo ${x[$i]} ; fi ; done
+
+
+merge-fastq-iric.sh /home/arion/davidm/Data/datasets/public/RNA-seq/bulk/BC-Cell-Lines-Panel_GSE48213/raw-fastqs
+
 
 
 
@@ -475,14 +500,47 @@ done
 ############################## STAR ALIGNMENTS FOR IGV ##############################
 #####################################################################################
 
+# Single cell
 
-# # Align T47D in bulk mode with STAR
+# Align sc T47D (DSP762) in bulk mode with STAR
 
-# $submit -w 30:00:00 -m 100gb -r $scripts_path/bash/quantification/run-star.sh -f $data_path/dsp762/raw-fastqs \
-# -o $data_path/dsp762/quant/star/$assembly/$annot/raw-reads -l "PEr2" -s "Sample_T47D" \
-# -args "--genomeDir $pipelines_path/star/STAR-2.7.9a/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/index/ \
-# --runThreadN 8 \
-# --outSAMtype BAM SortedByCoordinate \
-# --quantMode TranscriptomeSAM \
-# --outSAMunmapped Within \
-# --outSAMattributes Standard"
+$submit -w 30:00:00 -m 100gb -r $scripts_path/bash/quantification/run-star.sh -f $data_path/iric/dsp762/raw-fastqs \
+-o $data_path/iric/dsp762/quant/star/$assembly/$annot/raw-reads -l "PEr2" -s "Sample_T47D" \
+-args "--genomeDir $pipelines_path/star/STAR-2.7.9a/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/index/ \
+--runThreadN 8 \
+--outSAMtype BAM SortedByCoordinate \
+--quantMode TranscriptomeSAM \
+--outSAMunmapped Within \
+--outSAMattributes Standard"
+
+
+
+# Map bulk MCF7 (DSP356) with Salmon
+
+# Align bulk T47D (DSP280) with Star
+
+
+
+
+
+# Get other bulk projects Star alignments
+
+# project_IDs=(550 589 1111)
+
+# for p in ${project_IDs[@]}; do
+#     wget --no-check-certificate -O - \
+#     "https://genomique.iric.ca/BamList?key=${key}&projectID=$p&wget=1" \
+#     | wget --no-check-certificate -P $data_path/iric/dsp$p/downloaded -cri -
+# done
+
+
+# mkdir -p $sw/RNA-seq/rsem/rsem-1.2.28/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/index/
+
+# rsem-prepare-reference --gtf $references/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/gencode.v34.basic.annotation.gtf \
+# /home/arion/davidm/Data/references/human/assembly__GRCh38-hg38/GRCh38.primary_assembly.genome.fa \
+# $sw/RNA-seq/rsem/rsem-1.2.28/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/index/
+
+
+
+
+
