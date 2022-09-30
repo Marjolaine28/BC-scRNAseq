@@ -35,6 +35,16 @@ then
     wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-centos_linux64.tar.gz -P $(git root)/pipelines/sratoolkit
     tar -xvf $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz -C $(git root)/pipelines/sratoolkit
     rm $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz
+
+    ## Samtools
+    # wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-centos_linux64.tar.gz -P $(git root)/pipelines/sratoolkit
+    # tar -xvf $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz -C $(git root)/pipelines/sratoolkit
+    # rm $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz
+
+    ## STAR
+    # wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-centos_linux64.tar.gz -P $(git root)/pipelines/sratoolkit
+    # tar -xvf $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz -C $(git root)/pipelines/sratoolkit
+    # rm $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz
 else
     echo "Pipelines already installed."
 fi

@@ -20,6 +20,7 @@ key=${5:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
 export PATH="$scripts_path/bash/utils/:$PATH" 
 export PATH="$scripts_path/bash/quantification/:$PATH"
 export PATH="$pipelines_path/sratoolkit/sratoolkit.3.0.0-centos_linux64/bin/:$PATH"
+# ajouter path pour samtools et star
 
 if [[ $torque = 0 ]]
 then
@@ -458,12 +459,20 @@ done
 
 
 
+
+
+
+
+
+
+
 ################################################################################
 ##############################  MAPPING BULK DATA ##############################
 ################################################################################
 
 
-
+# Map 56 cells lines
+####################
 
 mkdir $data_path/public/bulk/56_cell_lines/downloaded
 
@@ -494,16 +503,53 @@ merge-fastq-iric.sh /home/arion/davidm/Data/datasets/public/RNA-seq/bulk/BC-Cell
 
 
 
+# Map bulk MCF7 (DSP356) with Salmon
+####################################
+
+# No decoys k31 dsp356
+
+# $submit -w 10:00:00 -m 60gb -r $scripts_path/bash/quantification/run-salmon.sh -f $data_path/dsp356/raw-fastqs \
+# -o $data_path/dsp356/quant/salmon/$assembly/$annot/raw-reads/no-decoys-k31-1.4.0 -l "PE" -s "Sample_E-1  Sample_E-2  Sample_E-3 Sample_V-1  Sample_V-2  Sample_V-3" \
+# -p $pipelines_path/salmon/salmon-1.4.0 -args "-l A -i $output_folder_index/no-decoys/index_k31 \
+# -g $references_path/$assembly/$annot/biomart_ens100/txp2gene_biomart_ens100.tsv --validateMappings"
 
 
-#####################################################################################
-############################## STAR ALIGNMENTS FOR IGV ##############################
-#####################################################################################
+# Decoys k31 dsp356
 
-# Single cell
+# $submit -w 10:00:00 -m 60gb -r $scripts_path/bash/quantification/run-salmon.sh -f $data_path/dsp356/raw-fastqs \
+# -o $data_path/dsp356/quant/salmon/$assembly/$annot/raw-reads/decoys-k31-1.4.0 -l "PE" -s "Sample_E-1  Sample_E-2  Sample_E-3 Sample_V-1  Sample_V-2  Sample_V-3" \
+# -p $pipelines_path/salmon/salmon-1.4.0 -args "-l A -i $output_folder_index/decoys/index_k31 \
+# -g $references_path/$assembly/$annot/biomart_ens100/txp2gene_biomart_ens100.tsv --validateMappings"
 
-# Align sc T47D (DSP762) in bulk mode with STAR
 
+
+
+
+
+
+####################################################################################################
+############################## STAR ALIGNMENTS FOR CORRELATIONS & IGV ##############################
+####################################################################################################
+
+
+
+# Create STAR index with GRCh38-hg38 assembly and gencode 37 annotation
+#######################################################################
+
+echo "module load star; \
+STAR --runThreadN 8 \
+--runMode genomeGenerate \
+--genomeDir $sw/RNA-seq/star/star-2.7.1a/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/index \
+--genomeFastaFiles $references/human/assembly__GRCh38-hg38/GRCh38.primary_assembly.genome.fa \
+--sjdbGTFfile $references/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/gencode.v37.annotation.gtf" \
+| qsub -V -l nodes=1,mem=200gb,vmem=200gb,walltime=48:00:00 -j oe -d $sw/RNA-seq/star/star-2.7.1a/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/index/logs/ -N "STAR-index-hg38-v37"
+
+
+
+# Align sc T47D (DSP762) in bulk mode with STAR (just for IGV, no need to quantify)
+###############################################
+
+# change to gencode 37 !!
 $submit -w 30:00:00 -m 100gb -r $scripts_path/bash/quantification/run-star.sh -f $data_path/iric/dsp762/raw-fastqs \
 -o $data_path/iric/dsp762/quant/star/$assembly/$annot/raw-reads -l "PEr2" -s "Sample_T47D" \
 -args "--genomeDir $pipelines_path/star/STAR-2.7.9a/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/index/ \
@@ -515,15 +561,61 @@ $submit -w 30:00:00 -m 100gb -r $scripts_path/bash/quantification/run-star.sh -f
 
 
 
-# Map bulk MCF7 (DSP356) with Salmon
+# Create RSEM reference with Gencode 37
+#######################################
+
+mkdir -p $sw/RNA-seq/rsem/rsem-1.2.28/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/index/
+
+rsem-prepare-reference --gtf /home/arion/davidm/Data/references/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/gencode.v37.annotation.gtf \
+/home/arion/davidm/Data/references/human/assembly__GRCh38-hg38/GRCh38.primary_assembly.genome.fa \
+/home/arion/davidm/Softwares/RNA-seq/rsem/rsem-1.2.28/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/index/
+
+
+
 
 # Align bulk T47D (DSP280) with Star
+####################################
+
+data_path=$dsp280
+scripts_path=$scripts/RNA-seq
+references_path=$references
+pipelines_path=$sw/RNA-seq
+assembly=human/assembly__GRCh38-hg38
+annot=annotation__gencode/gencode_37
+
+export PATH="$PATH:$scripts_path/bash/utils/" 
+export PATH="$PATH:$scripts_path/bash/quantification/" 
+
+qsub-all-fastqs.sh -w 30:00:00 -m 100gb -h 0 -r $scripts_path/bash/quantification/run-star.sh -f $data_path/raw-fastqs \
+-o $data_path/quant/star/$assembly/$annot/raw -l "PE" -s "all" \
+-args "--genomeDir $sw/RNA-seq/star/star-2.7.1a/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/index/ \
+--runThreadN 8 \
+--outSAMtype BAM SortedByCoordinate \
+--quantMode TranscriptomeSAM \
+--outSAMunmapped Within \
+--outSAMattributes Standard"
+
+
+x=($(echo $(find $dsp280/quant/star/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/raw/ -mindepth 1 -maxdepth 1 -type d)))
+
+for s in ${x[@]};  
+do  
+if [[ $(basename $s) != 'logs' ]]; 
+then  
+echo "rsem-calculate-expression -p 8 --paired-end --bam --no-bam-output \
+$dsp280/quant/star/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/raw/ $(basename $s)/Aligned.toTranscriptome.out.bam \
+$sw/RNA-seq/rsem/rsem-1.2.28/files/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/index/ \
+$dsp280/quant/star/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/raw/ $(basename $s)/rsem" run-star.sh_| qsub -V -l nodes=1,mem=35gb,vmem=35gb,walltime=2:00:00 -j oe -d $dsp280/quant/star/human/assembly__GRCh38-hg38/annotation__gencode/gencode_37/raw/$(basename $s)/logs/ -N RSEM-bulk-T47D-$(basename $s);
+  fi
 
 
 
 
 
-# Get other bulk projects Star alignments
+
+###### VOIR AVEC PATRICK COMMENT TELECHARGER
+
+# Get alignments already launched by the plateforme
 
 # project_IDs=(550 589 1111)
 
@@ -544,3 +636,36 @@ $submit -w 30:00:00 -m 100gb -r $scripts_path/bash/quantification/run-star.sh -f
 
 
 
+
+
+########################################################################################
+############################## INDEXING BAM FILES FOR IGV ##############################
+########################################################################################
+
+
+# sc T47D DSP762
+################
+
+samtools index $dsp762/quant/star/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/trimmed-reads-cutadapt/T47D/T47D_Aligned.sortedByCoord.out.bam
+
+# bulk T47D DSP280 (NI-E2)
+##########################
+
+samtools index $dsp762/quant/star/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/trimmed-reads-cutadapt/T47D/T47D_Aligned.sortedByCoord.out.bam
+
+
+# sc T47D DSP550 (pBabe n1)
+###########################
+
+samtools index $dsp762/quant/star/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/trimmed-reads-cutadapt/T47D/T47D_Aligned.sortedByCoord.out.bam
+
+# sc ZR75 DSP550 (pBabe n1)
+###########################
+
+samtools index $dsp762/quant/star/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/trimmed-reads-cutadapt/T47D/T47D_Aligned.sortedByCoord.out.bam
+
+
+# sc T47D DSP1111 (pMIG n1)
+###########################
+
+samtools index $dsp762/quant/star/human/assembly__GRCh38-hg38/annotation__gencode/gencode_34/trimmed-reads-cutadapt/T47D/T47D_Aligned.sortedByCoord.out.bam

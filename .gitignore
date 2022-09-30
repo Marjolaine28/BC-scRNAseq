@@ -1,7 +1,7 @@
 data/iric/*
 data/references/*
 data/public/*
-!data/public/SraRunTable.txt
-!data/public/SRR_Acc_List.txt
+!data/public/56_cell_lines/sra-files/SraRunTable.txt
+!data/public/56_cell_lines/sra-files/SRR_Acc_List.txt
 pipelines/*
 !pipelines/requirements.txt
