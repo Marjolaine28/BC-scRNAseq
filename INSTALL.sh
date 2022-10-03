@@ -37,14 +37,21 @@ then
     rm $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz
 
     ## Samtools
-    # wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-centos_linux64.tar.gz -P $(git root)/pipelines/sratoolkit
-    # tar -xvf $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz -C $(git root)/pipelines/sratoolkit
-    # rm $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz
+    wget https://github.com/samtools/samtools/releases/download/1.16/samtools-1.16.tar.bz2 -P $(git root)/pipelines/samtools
+    tar -vxjf $(git root)/pipelines/samtools/samtools-1.16.tar.bz2 -C $(git root)/pipelines/samtools
+    rm $(git root)/pipelines/samtools/samtools-1.16.tar.bz2
 
     ## STAR
-    # wget https://ftp-trace.ncbi.nlm.nih.gov/sra/sdk/3.0.0/sratoolkit.3.0.0-centos_linux64.tar.gz -P $(git root)/pipelines/sratoolkit
-    # tar -xvf $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz -C $(git root)/pipelines/sratoolkit
-    # rm $(git root)/pipelines/sratoolkit/sratoolkit.3.0.0-centos_linux64.tar.gz
+    wget https://github.com/alexdobin/STAR/archive/2.7.10a.tar.gz -P $(git root)/pipelines/star
+    tar -xzf $(git root)/pipelines/star/2.7.10a.tar.gz -C $(git root)/pipelines/star
+    rm $(git root)/pipelines/star/2.7.10a.tar.gz
+
+    ## RSEM
+    wget https://github.com/deweylab/RSEM/archive/refs/tags/v1.3.3.tar.gz -P $(git root)/pipelines/rsem
+    tar -xzf $(git root)/pipelines/rsem/v1.3.3.tar.gz -C $(git root)/pipelines/rsem
+    rm $(git root)/pipelines/rsem/v1.3.3.tar.gz
+    make -C $(git root)/pipelines/rsem/RSEM-1.3.3
+
 else
     echo "Pipelines already installed."
 fi

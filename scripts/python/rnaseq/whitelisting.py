@@ -48,12 +48,6 @@ def get_whitelist(libs) :
     errors = []
     correction_dict = {}
 
-    # neighbors_mtx = np.empty((len(barcodes), len(barcodes)))  
-    # for i in range(len(neighbors_mtx)) :
-    #     barcode1 = barcodes[i]
-    #     neighbors_mtx[i] = [(hammingDist(barcode1, barcode2) == 1) for barcode2 in barcodes]
-    # neighbors_mtx = pd.DataFrame(neighbors_mtx, columns = barcodes, index = barcodes, dtype=int)
-
     neighbors_mtx = np.empty((len(barcodes), len(barcodes)))  
     for i in range(len(neighbors_mtx)) :
         barcode1 = barcodes[i]
