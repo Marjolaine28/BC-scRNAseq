@@ -58,7 +58,7 @@ for p in ${project_IDs[@]}; do
     "https://genomique.iric.ca/FastQList?key=${key}&projectID=$p&wget=1" \
     | wget --no-check-certificate -P $data_path/iric/sc/dsp$p/downloaded-fastqs -cri -
 
-    merge-fastq-iric.sh $data_path/iric/sc/dsp$p/downloaded $data_path/iric/sc/dsp$p/merged-fastqs
+    merge-fastq-iric.sh $data_path/iric/sc/dsp$p/downloaded-fastqs $data_path/iric/sc/dsp$p/merged-fastqs
 done
 
 
@@ -222,9 +222,9 @@ fi
 
 for p in ${project_IDs[@]}
 do
-    $submit -w 03:00:00 -m 20gb -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/iric/dsp$p/merged-fastqs -o $data_path/iric/dsp$p/merged-fastqs -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+    $submit -w 03:00:00 -m 20gb -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/iric/sc/dsp$p/merged-fastqs -o $data_path/iric/sc/dsp$p/merged-fastqs -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
 
-    $submit -w 5:00:00 -m 10gb -r $scripts_path/bash/trimming/run-cutadapt.sh -f $data_path/iric/dsp$p/merged-fastqs -o $data_path/iric/dsp$p/trimmed-fastqs/cutadapt \
+    $submit -w 5:00:00 -m 10gb -r $scripts_path/bash/trimming/run-cutadapt.sh -f $data_path/iric/sc/dsp$p/merged-fastqs -o $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
     -l "PE" -s "all" -p $pipelines_path/cutadapt/cutadapt-3.2 -savepids 1 \
     -args '-m 20:20 -a CTGTCTCTTATACACATCTC;min_overlap=6 -A A{100};min_overlap=6 -A N{20}GTACTCTGCGTTGATACCACTGCTTCCGCGGACAGGCGTGTAGATCTCGGTGGTCGCCGTATCATT;min_overlap=26'
     
@@ -236,7 +236,7 @@ do
     fi
     
     wait_pid="$(arrayGet pids_trim $p)"
-    $submit -w 03:00:00 -m 20gb -h "$wait_pid" -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/iric/dsp$p/trimmed-fastqs/cutadapt -o $data_path/iric/dsp$p/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+    $submit -w 03:00:00 -m 20gb -h "$wait_pid" -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt -o $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
 done
 
 
@@ -254,8 +254,8 @@ done
 for p in ${project_IDs[@]}
 do
     wait_pid="$(arrayGet pids_trim $p)"
-    $submit -w 00:30:00 -m 5gb -h "$wait_pid" -r $scripts_path/bash/whitelisting/get_cb_whitelist.sh -f $data_path/iric/dsp$p/trimmed-fastqs/cutadapt \
-    -o $data_path/iric/dsp$p/trimmed-fastqs/cutadapt  -s "all" -p $scripts_path/python/rnaseq/whitelisting.py -savepids 1 -args "--top=3000"
+    $submit -w 00:30:00 -m 5gb -h "$wait_pid" -r $scripts_path/bash/whitelisting/get_cb_whitelist.sh -f $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
+    -o $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt  -s "all" -p $scripts_path/python/rnaseq/whitelisting.py -savepids 1 -args "--top=3000"
     
     if [[ $torque = 1 && -s "~/tmp/qsub_pids/pids.txt" ]]; then
         sample=$(cut -f1 -d ' ' ~/tmp/qsub_pids/pids.txt)
@@ -297,7 +297,7 @@ do
 
     args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $data_path/references/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --customWhitelist" # --writeMappings=mapping.sam
 
-    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp$p/trimmed-fastqs/cutadapt \
-    -o $data_path/iric/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/${mapping_params}/customWh-top-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 -args "$args"
+    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
+    -o $data_path/iric/sc/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/${mapping_params}/customWh-top-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 -args "$args"
 
 done
