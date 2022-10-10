@@ -1,6 +1,6 @@
 #!/bin/bash
 
-torque=${1:-"0"}
+torque=${1:-"1"}
 data_path=${2:-"$(git root)/data"}
 scripts_path=${3:-"$(git root)/scripts"}
 pipelines_path=${4:-"$(git root)/pipelines"}
@@ -50,17 +50,21 @@ arrayGet() {
 ############################## DOWNLOAD IRIC FASTQS ##############################  
 ##################################################################################
 
-project_IDs=(762 779 992 1090)
+# project_IDs=(762 779 992 1090)
+
+project_IDs=(992)
+
 
 
 for p in ${project_IDs[@]}; do
-    wget --no-check-certificate -O - \
-    "https://genomique.iric.ca/FastQList?key=${key}&projectID=$p&wget=1" \
-    | wget --no-check-certificate -P $data_path/iric/sc/dsp$p/downloaded-fastqs -cri -
-
+    echo $p
+    if [[ ! -d $data_path//iric/sc/dsp$p/downloaded-fastqs ]]; then
+        wget --no-check-certificate -O - \
+        "https://genomique.iric.ca/FastQList?key=${key}&projectID=$p&wget=1" \
+        | wget --no-check-certificate -P $data_path/iric/sc/dsp$p/downloaded-fastqs -cri -
+    fi
     merge-fastq-iric.sh $data_path/iric/sc/dsp$p/downloaded-fastqs $data_path/iric/sc/dsp$p/merged-fastqs
 done
-
 
 
 

@@ -36,6 +36,8 @@ Script    $(basename $0)    must be run with args :
 
 -args : additional arguments to pass to the script, e.g. adapter sequence for cutadapt or index for alevin.
 
+-savepids : if 1 stores the pids in ~/tmp (0 by default)
+
 
 
 
@@ -61,19 +63,42 @@ do
     	-l) lib="$1"; shift;;
         -s) samples="$1"; IFS=' ' declare -a 'samples=($samples)'; shift;;
         -args) args="$1"; shift;;
+        -savepids) savepids="$1"; shift;;
     esac
 done
+
+
+
+###### AUXILARY FUNCTIONS #######
+
+arrayGet() { 
+    local array=$1 index=$2
+    local i="${array}_$index"
+    printf '%s' "${!i}"
+}
+
+function join_by { local d=${1-} f=${2-}; if shift 2; then printf %s "$f" "${@/#/$d}"; fi; }
+
+
+
+###### DEFAULT ARGS #######
+
 
 lib=${lib:-'PE'}
 hold=${hold:-''}
 samples=${samples:-'all'}  
 pipeline=${pipeline:-'def'}
+savepids=${savepids:-'0'}
 
-function join_by { local d=${1-} f=${2-}; if shift 2; then printf %s "$f" "${@/#/$d}"; fi; }
 
-IFS=' ' declare -a 'hold=($hold)'
 
-# pids=$(join_by : ${hold[@]})
+###### CONFIGURE TMP DIRCTORY #######
+
+mkdir -p ~/tmp/qsub_pids
+if [[ $savepids = 1 && -s ~/tmp/qsub_pids/pids.txt ]]
+then
+    rm  ~/tmp/qsub_pids/pids.txt;
+fi
 
 
 ####### CACLCULATE TOTAL NUMBER OF SAMPLES (INCLUDING REPLICATES) THAT WILL BE PROCESSED #######
@@ -102,6 +127,8 @@ fi
 tot=${#S[@]}
 
 
+
+
 ###### CREATE A LOG FILE FOR THIS SCRIPT #######
 
 mkdir -p $output_path/logs
@@ -125,6 +152,7 @@ Run script    $(basename $0)    with args :
 -l : $lib
 -s : $samples
 -args : ${args:-"default"}
+-savepids : $savepids
 
 
 
@@ -142,11 +170,10 @@ Run script    $(basename $0)    with args :
 
 ####### SUBMIT JOBS #######
 
-run=$(basename $run_path) 
+IFS=';'; hold=($hold);
+run=$(basename $run_path)
 
-i=$((${#S[@]}-1))
-
-for s in ${S[@]}
+for s in ${S[@]}                                                                                                            ### loop over the samples
 do
     IFS='/' read -ra sname <<< $s
     sname=${sname[*]: -2:1}                                                                                                 ### get sample name
@@ -155,22 +182,41 @@ do
 
     if [[ $ec == 1 ]]; 
     then
-        echo "Job not submitted for $s."
+        echo "Job not submitted for $sname."                                                                                ### error code 1 is returned when the output already exists (avoid overwriting)
         continue
     fi
 
-    if [[ $hold = "" ]]                                                                                                     ### submit jobs ; hold option allows to wait for some previous task to finish before exection
+    pids="";                                                                                                                ### get the different jobs to wait for
+    for h in ${hold[@]}; do
+        IFS=','; holdx=($h);                                                                                                ### get the different sample-specific jobs to wait for
+        if [[ ${#holdx[@]} > 1 ]];                                                                                          ### case only more than one sample
+        then 
+            IFS=' '; sx=(${holdx[0]}); pidx=(${holdx[1]});                                                                  ### get pid for the sample s
+            for index in "${!sx[@]}"; do
+                if [[ ${sx[$index]} = $sname ]]
+                then
+                    pid=${pidx[$index]}
+                    pids="$pids $pid";                                                                                      ### append the sample-specific job pid
+                fi
+            done
+        else 
+            pids="$pids $h";                                                                                                ### append the job pid
+        fi; 
+    done;
+    IFS=' '; pids=($pids); pids=$(join_by : ${pids[@]});
+    if [[ $pids = "" ]]                                                                                                     ### submit jobs ; hold option allows to wait for some previous task to finish before exection
     then
-        echo "$run_path -f $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}"
+        pid_job=$(echo "$run_path -f $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}")
+        echo "$pid_job submitted ($(basename $run_path) on $sname)."
     else
-        IFS=' ' declare -a 'hold=($hold)'
-        pids=""; 
-        for h in ${hold[@]}; do if [[ ${h:0:1} == n ]]; then pids="$pids $((${h:1} - $i))"; else pids="$pids $h"; fi; done;
-        IFS=' ' declare -a 'pids=($pids)'; 
-        pids=$(join_by : ${pids[@]}); 
         echo "Wait jobs $pids to complete before queueing :"
-        echo "$run_path -f $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}" -W depend=afterok:$pids
-        echo "(Hold status)"
-        i=$(($i-1))
+        pid_job=$(echo "$run_path -f $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}" -W depend=afterok:$pids)
+        echo "$pid_job in hold status ($(basename $run_path) on $s)."
+
+    fi
+
+    if [[ $savepids = 1 ]]
+    then
+        echo $sname ${pid_job} $run_path >> ~/tmp/qsub_pids/pids.txt
     fi
 done
