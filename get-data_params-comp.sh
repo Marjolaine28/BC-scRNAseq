@@ -1,11 +1,8 @@
 #!/bin/bash
 
-torque=${1:-"0"}
-data_path=${2:-"$(git root)/data"}
-scripts_path=${3:-"$(git root)/scripts"}
-pipelines_path=${4:-"$(git root)/pipelines"}
-key=${5:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
-
+torque=${1:-"1"}
+path=${2:-"$(git root)"}
+key=${3:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
 
 
 
@@ -17,10 +14,9 @@ key=${5:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
 #################################################################################
 
 
-export PATH="$scripts_path/bash/utils/:$PATH" 
-export PATH="$scripts_path/bash/quantification/:$PATH"
-export PATH="$pipelines_path/sratoolkit/sratoolkit.3.0.0-centos_linux64/bin/:$PATH"
-# ajouter path pour samtools et star
+export PATH="$path/scripts/bash/utils/:$PATH" 
+export PATH="$path/scripts/bash/quantification/:$PATH"
+
 
 if [[ $torque = 0 ]]
 then
@@ -55,13 +51,14 @@ project_IDs=(762 779 992 1090)
 
 
 for p in ${project_IDs[@]}; do
-    wget --no-check-certificate -O - \
-    "https://genomique.iric.ca/FastQList?key=${key}&projectID=$p&wget=1" \
-    | wget --no-check-certificate -P $data_path/iric/sc/dsp$p/downloaded -cri -
-
-    merge-fastq-iric.sh $data_path/iric/sc/dsp$p/downloaded $data_path/iric/sc/dsp$p/raw-fastqs
+    echo $p
+    if [[ ! -d $path/data//iric/sc/dsp$p/downloaded-fastqs ]]; then
+        wget --no-check-certificate -O - \
+        "https://genomique.iric.ca/FastQList?key=${key}&projectID=$p&wget=1" \
+        | wget --no-check-certificate -P $path/data/iric/sc/dsp$p/downloaded-fastqs -cri -
+    fi
+    merge-fastq-iric.sh $path/data/iric/sc/dsp$p/downloaded-fastqs $path/data/iric/sc/dsp$p/merged-fastqs
 done
-
 
 
 
@@ -74,31 +71,46 @@ done
 ############################## DOWNLOAD REFERENCE GENOME AND TRANSCRIPTOME ##############################
 #########################################################################################################
 
-assembly=human/assembly__GRCh38-hg38
-annot=annotation__gencode/gencode_34
 
-if [[ ! -d $data_path/references ]]; 
-then 
-    mkdir -p $data_path/references
-
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.transcripts.fa.gz -P $data_path/references/$assembly/$annot
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $data_path/references/$assembly
+if [[ ! -f $path/data/references/$assembly/GRCh38.primary_assembly.genome.fa.gz ]]; then 
+    mkdir -p $path/data/references
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $path/data/references/$assembly
 else
-    echo "References already available."
+    echo "Reference $assembly already available."
 fi
 
-echo ">EGFP
-ATGGTGAGCAAGGGCGAGGAGCTGTTCACCGGGGTGGTGCCCATCCTGGTCGAGCTGGACGGCGACGTAAACGGCCACAA
-GTTCAGCGTGTCCGGCGAGGGCGAGGGCGATGCCACCTACGGCAAGCTGACCCTGAAGTTCATCTGCACCACCGGCAAGC
-TGCCCGTGCCCTGGCCCACCCTCGTGACCACCCTGACCTACGGCGTGCAGTGCTTCAGCCGCTACCCCGACCACATGAAG
-CAGCACGACTTCTTCAAGTCCGCCATGCCCGAAGGCTACGTCCAGGAGCGCACCATCTTCTTCAAGGACGACGGCAACTA
-CAAGACCCGCGCCGAGGTGAAGTTCGAGGGCGACACCCTGGTGAACCGCATCGAGCTGAAGGGCATCGACTTCAAGGAGG
-ACGGCAACATCCTGGGGCACAAGCTGGAGTACAACTACAACAGCCACAACGTCTATATCATGGCCGACAAGCAGAAGAAC
-GGCATCAAGGTGAACTTCAAGATCCGCCACAACATCGAGGACGGCAGCGTGCAGCTCGCCGACCACTACCAGCAGAACAC
-CCCCATCGGCGACGGCCCCGTGCTGCTGCCCGACAACCACTACCTGAGCACCCAGTCCGCCCTGAGCAAAGACCCCAACG
-AGAAGCGCGATCACATGGTCCTGCTGGAGTTCGTGACCGCCGCCGGGATCACTCTCGGCATGGACGAGCTGTACAAGTAA" > $data_path/references/exogenous/EGFP/genome.EGFP.fa
-gzip $data_path/references/exogenous/EGFP/genome.EGFP.fa
-cat $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz $data_path/references/exogenous/EGFP/genome.EGFP.fa.gz > $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz
+
+if [[ ! -f $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz ]]; then 
+    mkdir -p $path/data/references
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.transcripts.fa.gz -P $path/data/references/$assembly/$annot
+else
+    echo "Reference $annot already available."
+fi
+
+
+if [[ ! -f $path/data/references/exogenous/EGFP/genome.EGFP.fa.gz ]]; then 
+    mkdir -p $path/data/references/exogenous/EGFP/
+    echo ">EGFP
+    ATGGTGAGCAAGGGCGAGGAGCTGTTCACCGGGGTGGTGCCCATCCTGGTCGAGCTGGACGGCGACGTAAACGGCCACAA
+    GTTCAGCGTGTCCGGCGAGGGCGAGGGCGATGCCACCTACGGCAAGCTGACCCTGAAGTTCATCTGCACCACCGGCAAGC
+    TGCCCGTGCCCTGGCCCACCCTCGTGACCACCCTGACCTACGGCGTGCAGTGCTTCAGCCGCTACCCCGACCACATGAAG
+    CAGCACGACTTCTTCAAGTCCGCCATGCCCGAAGGCTACGTCCAGGAGCGCACCATCTTCTTCAAGGACGACGGCAACTA
+    CAAGACCCGCGCCGAGGTGAAGTTCGAGGGCGACACCCTGGTGAACCGCATCGAGCTGAAGGGCATCGACTTCAAGGAGG
+    ACGGCAACATCCTGGGGCACAAGCTGGAGTACAACTACAACAGCCACAACGTCTATATCATGGCCGACAAGCAGAAGAAC
+    GGCATCAAGGTGAACTTCAAGATCCGCCACAACATCGAGGACGGCAGCGTGCAGCTCGCCGACCACTACCAGCAGAACAC
+    CCCCATCGGCGACGGCCCCGTGCTGCTGCCCGACAACCACTACCTGAGCACCCAGTCCGCCCTGAGCAAAGACCCCAACG
+    AGAAGCGCGATCACATGGTCCTGCTGGAGTTCGTGACCGCCGCCGGGATCACTCTCGGCATGGACGAGCTGTACAAGTAA" > $path/data/references/exogenous/EGFP/genome.EGFP.fa
+    gzip $path/data/references/exogenous/EGFP/genome.EGFP.fa
+else
+    echo "Reference EGFP genome already available."
+fi
+
+
+if [[ ! -f $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz ]]; then 
+    cat $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz $path/data/references/exogenous/EGFP/genome.EGFP.fa.gz > $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz
+else
+    echo "Reference $annot + EGFP already available."
+fi
 
 
 
@@ -112,15 +124,17 @@ cat $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz $data_p
 ######################## GET TRANSCRIPTS TO GENES MAPPING ########################
 ##################################################################################
 
-zcat $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
-sed -i 's/|/\t/g' $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
-sed -i 's/>//g' $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+if [[ ! -f $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv ]]; then
+    zcat $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+    sed -i 's/|/\t/g' $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+    sed -i 's/>//g' $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+fi
 
-echo -en 'EGFP\tEGFP' > $data_path/references/$assembly/$annot/tmp.tsv
-cat $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv $data_path/references/$assembly/$annot/tmp.tsv > $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts_txp2gene.tsv
-rm $data_path/references/$assembly/$annot/tmp.tsv
-
-
+if [[ ! -f $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts_txp2gene.tsv ]]; then
+    echo -en 'EGFP\tEGFP' > $path/data/references/$assembly/$annot/tmp.tsv
+    cat $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv $path/data/references/$assembly/$annot/tmp.tsv > $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts_txp2gene.tsv
+    rm $path/data/references/$assembly/$annot/tmp.tsv
+fi
 
 
 
@@ -133,21 +147,26 @@ rm $data_path/references/$assembly/$annot/tmp.tsv
 #############################################################################
 
 
-output_folder_index=$pipelines_path/salmon/salmon-1.4.0/files/$assembly/$annot 
-
-
-
-
-################# Indexing with decoys (several kmers sizes)
-
+output_folder_index=$pipelines_path/salmon/salmon-1.4.0/files/$assembly/$annot
 mkdir -p $output_folder_index/decoys
+mkdir -p $output_folder_index/no-decoys
+
+
+
+# Get decoys with gencode 34 #
+###############################
 
 
 if [[ ! -f $output_folder_index/decoys/decoys.txt && ! -f $output_folder_index/decoys/gentrome.fa ]] 
 then
-    salmon-get-decoys.sh -g $data_path/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
-    -t $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/decoys
-fi 
+    salmon-get-decoys.sh -g $path/data/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
+    -t $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/decoys
+fi
+
+
+
+# Indexing with decoys (several kmers sizes) #
+##############################################
 
 
 kmers=(17 19 23 27 29 31) 
@@ -175,9 +194,9 @@ done
 
 
 
-################# Indexing without decoys
+# Indexing without decoys (k19) #
+#################################
 
-mkdir -p $output_folder_index/no-decoys
 
 if [[ -d $output_folder_index/no-decoys/index_k19 ]] 
 then
@@ -198,35 +217,34 @@ fi
 
 
 
-################# Indexing using decoys + GFP seq
-
-mkdir -p $output_folder_index/EGFP-decoys
-
-#### Generate decoys
-
-if [[ ! -f $output_folder_index/EGFP-decoys/decoys.txt && ! -f $output_folder_index/EGFP-decoys/gentrome.fa ]] 
-then
-    salmon-get-decoys.sh -g $data_path/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
-    -t $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz -o $output_folder_index/EGFP-decoys
- fi 
+# Get decoys with GFP seq & gencode 34 #
+#########################################
 
 
-if [[ -d $output_folder_index/EGFP-decoys/index_k19 ]] 
-then
+if [[ ! -f $output_folder_index/EGFP-decoys/decoys.txt && ! -f $output_folder_index/EGFP-decoys/gentrome.fa ]]; then
+    salmon-get-decoys.sh -g $path/data/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
+    -t $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz -o $output_folder_index/EGFP-decoys
+fi
+
+
+# Indexing with decoys + GFP seq & gencode 34 #
+###############################################
+
+
+if [[ -d $output_folder_index/EGFP-decoys/index_k19 ]]; then
     echo "EGFP-decoys/index_k19 already generated.
     
     "
 else
     if [[ $torque = 0 ]]
     then
-        export PATH="$pipelines_path/salmon/salmon-1.4.0/bin:$PATH"
+        export PATH="$path/pipelines/salmon/salmon-1.4.0/bin:$PATH"
         salmon index -k 19 -t $output_folder_index/EGFP-decoys/gentrome.fa.gz -d $output_folder_index/EGFP-decoys/decoys.txt -i $output_folder_index/EGFP-decoys/index_k19 --gencode
     else
-        qsub-salmon-indexing.sh -w 15:00:00 -m 150gb -t $output_folder_index/EGFP-decoys/gentrome.fa.gz -d $output_folder_index/EGFP-decoys/decoys.txt -o $output_folder_index/EGFP-decoys -k 19 -p $pipelines_path/salmon/salmon-1.4.0 -args '--gencode'
+        qsub-salmon-indexing.sh -w 15:00:00 -m 150gb -t $output_folder_index/EGFP-decoys/gentrome.fa.gz -d $output_folder_index/EGFP-decoys/decoys.txt -o $output_folder_index/EGFP-decoys -k 19 -p $path/pipelines/salmon/salmon-1.4.0 -args '--gencode'
         pids_index_decoys_gfp_k19=$(qstat -u $USER | tail -n 1 | awk '{print $1}' | cut -d"." -f1)
     fi
 fi
-
 
 
 
@@ -277,7 +295,8 @@ done
 
 
 
-# Decoys, trimming & default parameters + mt_genes + rrna genes  #### EDIT : run on all samples
+# Decoys, trimming & default parameters + mt_genes + rrna genes #
+#################################################################
 
 for p in ${project_IDs[@]}
 do
@@ -287,13 +306,13 @@ do
         wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_gfp_k19)"
         mapping_params="EGFP-decoys-k19-1.4.0"
         index="EGFP-decoys"
-        txp2gene="biomart_ens100/gencode.v34.EGFP_transcripts_txp2gene.tsv"
+        txp2gene="gencode.v34.EGFP_transcripts_txp2gene.tsv"
 
     else
         wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_k19)" 
         mapping_params="decoys-k19-1.4.0"
         index="decoys"
-        txp2gene="biomart_ens100/gencode.v34.transcripts_txp2gene.tsv"
+        txp2gene="gencode.v34.transcripts_txp2gene.tsv"
     fi
 
 
@@ -307,7 +326,9 @@ done
 
 
 
-# Decoys, trimming, forceCells 3000 & different kmer sizes 
+
+# Decoys, trimming, forceCells 3000 & different kmer sizes #
+############################################################
 
 
 for i in ${!kmers[@]}
@@ -323,7 +344,10 @@ done
 
 
 
-# # Decoys, no trimming, forceCells 3000 & different kmer sizes 
+
+
+# # Decoys, no trimming, forceCells 3000 & different kmer sizes #
+# ###############################################################
 
 # for i in ${!kmers[@]}
 # do
@@ -338,7 +362,9 @@ done
 
 
 
-# No decoys, k19 & forceCells 3000
+
+# No decoys, k19 & forceCells 3000 #
+####################################
 
 pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index  no_decoys_k19)"
 $submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp779/trimmed-fastqs/cutadapt-all \
@@ -349,7 +375,9 @@ $submit -w 6:00:00 -m 50gb -h "$pid" -r $scripts_path/bash/quantification/run-al
 
 
 
-# Decoys, k19 & forceCells 400 ER1 sample
+
+# Decoys, k19 & forceCells 400 ER1 sample #
+###########################################
 
 $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/dsp779/trimmed-fastqs/cutadapt-all \
     -o $data_path/iric/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt-all/decoys-k19-1.4.0/forceCells-400 -l "PE" -s "Sample_N705_-_ER1" -p $pipelines_path/salmon/salmon-1.4.0 \
@@ -360,21 +388,24 @@ $submit -w 6:00:00  -h "$pid" -m 50gb -r $scripts_path/bash/quantification/run-a
 
 
 
-################# Run Alevin on all other projects using selected parameters (kmer 19, forceCells 3000, decoys)
-###############################################################################################################
+
+
+
+###############################################################
+##################### SELECTED PARAMETERS #####################
+###############################################################
+
 
 
 for p in ${project_IDs[@]}
 do
     if [[ $p = 1090 ]]
     then
-        # pid="n${pid_trim[$i]} ${pid_decoys_gfp}"    # Use also EGFP sequence to quantify dsp1090
         pid="$(arrayGet pids_trim $p) ; $(arrayGet pids_index  k19-decoys-gfp)"
         mapping_params="EGFP-decoys-k19-1.4.0"
         index="EGFP-decoys"
         txp2gene="biomart_ens100/gencode.v34.EGFP_transcripts_txp2gene.tsv"
     else
-        # pid="n${pid_trim[$i]} ${pid_decoys[3]}"
         pid="$(arrayGet pids_trim $p) ; $(arrayGet pids_index  k19-decoys)"
         mapping_params="decoys-k19-1.4.0"
         index="decoys"

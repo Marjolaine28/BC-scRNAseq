@@ -36,7 +36,7 @@ Script    $(basename $0)    must be run with args :
 
 -args : additional arguments to pass to the script, e.g. adapter sequence for cutadapt or index for alevin.
 
--savepids : if 1 stores the pids in ~/tmp (0 by default)
+-savepids : if 1 stores the pids in /u/davidm/tmp (0 by default)
 
 
 
@@ -94,10 +94,10 @@ savepids=${savepids:-'0'}
 
 ###### CONFIGURE TMP DIRCTORY #######
 
-mkdir -p ~/tmp/qsub_pids
-if [[ $savepids = 1 && -s ~/tmp/qsub_pids/pids.txt ]]
+mkdir -p /u/davidm/tmp/qsub_pids
+if [[ $savepids = 1 && -s /u/davidm/tmp/qsub_pids/pids.txt ]]
 then
-    rm  ~/tmp/qsub_pids/pids.txt;
+    rm  /u/davidm/tmp/qsub_pids/pids.txt;
 fi
 
 
@@ -170,8 +170,8 @@ Run script    $(basename $0)    with args :
 
 ####### SUBMIT JOBS #######
 
-IFS=';'; hold=($hold);
 run=$(basename $run_path)
+IFS=';' declare -a 'hold=($hold)'
 
 for s in ${S[@]}                                                                                                            ### loop over the samples
 do
@@ -200,7 +200,7 @@ do
                 fi
             done
         else 
-            pids="$pids $h";                                                                                                ### append the job pid
+            pids="$pids $h";  
         fi; 
     done;
     IFS=' '; pids=($pids); pids=$(join_by : ${pids[@]});
@@ -210,13 +210,13 @@ do
         echo "$pid_job submitted ($(basename $run_path) on $sname)."
     else
         echo "Wait jobs $pids to complete before queueing :"
-        pid_job=$(echo "$run_path -f $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}" -W depend=afterok:$pids)
+        pid_job=$(echo "$run_path -f $s -o $output_path -p $pipeline -args '$args' -l $lib" | qsub -V -l nodes=1,mem=$mem,vmem=$mem,walltime=$walltime -j oe -d $output_path/${sname}/logs/ -N "${run}_${sname}" -W depend=afterok:$pids) 
         echo "$pid_job in hold status ($(basename $run_path) on $s)."
 
     fi
 
     if [[ $savepids = 1 ]]
     then
-        echo $sname ${pid_job} $run_path >> ~/tmp/qsub_pids/pids.txt
+        echo $sname ${pid_job} $run_path >> /u/davidm/tmp/qsub_pids/pids.txt
     fi
 done

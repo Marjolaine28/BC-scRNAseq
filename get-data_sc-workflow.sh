@@ -1,11 +1,8 @@
 #!/bin/bash
 
 torque=${1:-"1"}
-data_path=${2:-"$(git root)/data"}
-scripts_path=${3:-"$(git root)/scripts"}
-pipelines_path=${4:-"$(git root)/pipelines"}
-key=${5:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
-
+path=${2:-"$(git root)"}
+key=${3:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
 
 
 
@@ -17,8 +14,8 @@ key=${5:-"2212-e9fcdc80cfd658683c786d89297a28fd"}
 #################################################################################
 
 
-export PATH="$scripts_path/bash/utils/:$PATH" 
-export PATH="$scripts_path/bash/quantification/:$PATH"
+export PATH="$path/scripts/bash/utils/:$PATH" 
+export PATH="$path/scripts/bash/quantification/:$PATH"
 
 
 if [[ $torque = 0 ]]
@@ -58,12 +55,12 @@ project_IDs=(992)
 
 for p in ${project_IDs[@]}; do
     echo $p
-    if [[ ! -d $data_path//iric/sc/dsp$p/downloaded-fastqs ]]; then
+    if [[ ! -d $path/data//iric/sc/dsp$p/downloaded-fastqs ]]; then
         wget --no-check-certificate -O - \
         "https://genomique.iric.ca/FastQList?key=${key}&projectID=$p&wget=1" \
-        | wget --no-check-certificate -P $data_path/iric/sc/dsp$p/downloaded-fastqs -cri -
+        | wget --no-check-certificate -P $path/data/iric/sc/dsp$p/downloaded-fastqs -cri -
     fi
-    merge-fastq-iric.sh $data_path/iric/sc/dsp$p/downloaded-fastqs $data_path/iric/sc/dsp$p/merged-fastqs
+    merge-fastq-iric.sh $path/data/iric/sc/dsp$p/downloaded-fastqs $path/data/iric/sc/dsp$p/merged-fastqs
 done
 
 
@@ -78,35 +75,45 @@ done
 #########################################################################################################
 
 
-if [[ ! -f $data_path/references/$assembly/GRCh38.primary_assembly.genome.fa.gz ]]; then 
-    mkdir -p $data_path/references
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $data_path/references/$assembly
+if [[ ! -f $path/data/references/$assembly/GRCh38.primary_assembly.genome.fa.gz ]]; then 
+    mkdir -p $path/data/references
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/GRCh38.primary_assembly.genome.fa.gz -P $path/data/references/$assembly
 else
-    echo "Reference already $assembly available."
+    echo "Reference $assembly already available."
 fi
 
 
-if [[ ! -f $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz ]]; then 
-    mkdir -p $data_path/references
-    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.transcripts.fa.gz -P $data_path/references/$assembly/$annot
+if [[ ! -f $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz ]]; then 
+    mkdir -p $path/data/references
+    wget ftp://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_34/gencode.v34.transcripts.fa.gz -P $path/data/references/$assembly/$annot
 else
-    echo "Reference already $annot available."
+    echo "Reference $annot already available."
 fi
 
-mkdir -p $data_path/references/exogenous/EGFP/
-echo ">EGFP
-ATGGTGAGCAAGGGCGAGGAGCTGTTCACCGGGGTGGTGCCCATCCTGGTCGAGCTGGACGGCGACGTAAACGGCCACAA
-GTTCAGCGTGTCCGGCGAGGGCGAGGGCGATGCCACCTACGGCAAGCTGACCCTGAAGTTCATCTGCACCACCGGCAAGC
-TGCCCGTGCCCTGGCCCACCCTCGTGACCACCCTGACCTACGGCGTGCAGTGCTTCAGCCGCTACCCCGACCACATGAAG
-CAGCACGACTTCTTCAAGTCCGCCATGCCCGAAGGCTACGTCCAGGAGCGCACCATCTTCTTCAAGGACGACGGCAACTA
-CAAGACCCGCGCCGAGGTGAAGTTCGAGGGCGACACCCTGGTGAACCGCATCGAGCTGAAGGGCATCGACTTCAAGGAGG
-ACGGCAACATCCTGGGGCACAAGCTGGAGTACAACTACAACAGCCACAACGTCTATATCATGGCCGACAAGCAGAAGAAC
-GGCATCAAGGTGAACTTCAAGATCCGCCACAACATCGAGGACGGCAGCGTGCAGCTCGCCGACCACTACCAGCAGAACAC
-CCCCATCGGCGACGGCCCCGTGCTGCTGCCCGACAACCACTACCTGAGCACCCAGTCCGCCCTGAGCAAAGACCCCAACG
-AGAAGCGCGATCACATGGTCCTGCTGGAGTTCGTGACCGCCGCCGGGATCACTCTCGGCATGGACGAGCTGTACAAGTAA" > $data_path/references/exogenous/EGFP/genome.EGFP.fa
-gzip $data_path/references/exogenous/EGFP/genome.EGFP.fa
-cat $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz $data_path/references/exogenous/EGFP/genome.EGFP.fa.gz > $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz
 
+if [[ ! -f $path/data/references/exogenous/EGFP/genome.EGFP.fa.gz ]]; then 
+    mkdir -p $path/data/references/exogenous/EGFP/
+    echo ">EGFP
+    ATGGTGAGCAAGGGCGAGGAGCTGTTCACCGGGGTGGTGCCCATCCTGGTCGAGCTGGACGGCGACGTAAACGGCCACAA
+    GTTCAGCGTGTCCGGCGAGGGCGAGGGCGATGCCACCTACGGCAAGCTGACCCTGAAGTTCATCTGCACCACCGGCAAGC
+    TGCCCGTGCCCTGGCCCACCCTCGTGACCACCCTGACCTACGGCGTGCAGTGCTTCAGCCGCTACCCCGACCACATGAAG
+    CAGCACGACTTCTTCAAGTCCGCCATGCCCGAAGGCTACGTCCAGGAGCGCACCATCTTCTTCAAGGACGACGGCAACTA
+    CAAGACCCGCGCCGAGGTGAAGTTCGAGGGCGACACCCTGGTGAACCGCATCGAGCTGAAGGGCATCGACTTCAAGGAGG
+    ACGGCAACATCCTGGGGCACAAGCTGGAGTACAACTACAACAGCCACAACGTCTATATCATGGCCGACAAGCAGAAGAAC
+    GGCATCAAGGTGAACTTCAAGATCCGCCACAACATCGAGGACGGCAGCGTGCAGCTCGCCGACCACTACCAGCAGAACAC
+    CCCCATCGGCGACGGCCCCGTGCTGCTGCCCGACAACCACTACCTGAGCACCCAGTCCGCCCTGAGCAAAGACCCCAACG
+    AGAAGCGCGATCACATGGTCCTGCTGGAGTTCGTGACCGCCGCCGGGATCACTCTCGGCATGGACGAGCTGTACAAGTAA" > $path/data/references/exogenous/EGFP/genome.EGFP.fa
+    gzip $path/data/references/exogenous/EGFP/genome.EGFP.fa
+else
+    echo "Reference EGFP genome already available."
+fi
+
+
+if [[ ! -f $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz ]]; then 
+    cat $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz $path/data/references/exogenous/EGFP/genome.EGFP.fa.gz > $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz
+else
+    echo "Reference $annot + EGFP already available."
+fi
 
 
 
@@ -119,16 +126,16 @@ cat $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz $data_p
 ######################## GET TRANSCRIPTS TO GENES MAPPING ########################
 ##################################################################################
 
-if [[ ! -f $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv ]]; then
-    zcat $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
-    sed -i 's/|/\t/g' $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
-    sed -i 's/>//g' $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+if [[ ! -f $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv ]]; then
+    zcat $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz | grep '>' | cut -d"|" -f1,2 > $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+    sed -i 's/|/\t/g' $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
+    sed -i 's/>//g' $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv
 fi
 
-if [[ ! -f $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts_txp2gene.tsv ]]; then
-    echo -en 'EGFP\tEGFP' > $data_path/references/$assembly/$annot/tmp.tsv
-    cat $data_path/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv $data_path/references/$assembly/$annot/tmp.tsv > $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts_txp2gene.tsv
-    rm $data_path/references/$assembly/$annot/tmp.tsv
+if [[ ! -f $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts_txp2gene.tsv ]]; then
+    echo -en 'EGFP\tEGFP' > $path/data/references/$assembly/$annot/tmp.tsv
+    cat $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv $path/data/references/$assembly/$annot/tmp.tsv > $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts_txp2gene.tsv
+    rm $path/data/references/$assembly/$annot/tmp.tsv
 fi
 
 
@@ -143,19 +150,19 @@ fi
 #############################################################################
 
 
-output_folder_index=$pipelines_path/salmon/salmon-1.4.0/files/$assembly/$annot 
+output_folder_index=$path/pipelines/salmon/salmon-1.4.0/files/$assembly/$annot 
+mkdir -p $output_folder_index/decoys
+mkdir -p $output_folder_index/EGFP-decoys
 
 
-
-# Gets decoys with gencode 34 #
+# Get decoys with gencode 34 #
 ###############################
 
-mkdir -p $output_folder_index/decoys
 
 if [[ ! -f $output_folder_index/decoys/decoys.txt && ! -f $output_folder_index/decoys/gentrome.fa ]] 
 then
-    salmon-get-decoys.sh -g $data_path/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
-    -t $data_path/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/decoys
+    salmon-get-decoys.sh -g $path/data/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
+    -t $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/decoys
 fi
 
 
@@ -169,11 +176,11 @@ if [[ -d $output_folder_index/decoys/index_k19 ]]; then
     "
 else
     if [[ $torque = 0 ]]; then
-        export PATH="$pipelines_path/salmon/salmon-1.4.0/bin:$PATH"
+        export PATH="$path/pipelines/salmon/salmon-1.4.0/bin:$PATH"
         salmon index -k 19 -t $output_folder_index/decoys/gentrome.fa.gz -d $output_folder_index/decoys/decoys.txt -i $output_folder_index/decoys/index_k19 --gencode
 
     else
-        qsub-salmon-indexing.sh -w 5:00:00 -m 150gb -t $output_folder_index/decoys/gentrome.fa.gz -d $output_folder_index/decoys/decoys.txt -o $output_folder_index/decoys -k 19 -p $pipelines_path/salmon/salmon-1.4.0 -args '--gencode'
+        qsub-salmon-indexing.sh -w 5:00:00 -m 150gb -t $output_folder_index/decoys/gentrome.fa.gz -d $output_folder_index/decoys/decoys.txt -o $output_folder_index/decoys -k 19 -p $path/pipelines/salmon/salmon-1.4.0 -args '--gencode'
         pids_index_decoys_k19=$(qstat -u $USER | tail -n 1 | awk '{print $1}' | cut -d"." -f1)
 
     fi
@@ -181,14 +188,13 @@ fi
 
 
 
-# Gets decoys with GFP seq & gencode 34 #
+# Get decoys with GFP seq & gencode 34 #
 #########################################
 
-mkdir -p $output_folder_index/EGFP-decoys
 
 if [[ ! -f $output_folder_index/EGFP-decoys/decoys.txt && ! -f $output_folder_index/EGFP-decoys/gentrome.fa ]]; then
-    salmon-get-decoys.sh -g $data_path/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
-    -t $data_path/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz -o $output_folder_index/EGFP-decoys
+    salmon-get-decoys.sh -g $path/data/references/$assembly/GRCh38.primary_assembly.genome.fa.gz \
+    -t $path/data/references/$assembly/$annot/gencode.v34.EGFP_transcripts.fa.gz -o $output_folder_index/EGFP-decoys
 fi
 
 
@@ -203,10 +209,10 @@ if [[ -d $output_folder_index/EGFP-decoys/index_k19 ]]; then
 else
     if [[ $torque = 0 ]]
     then
-        export PATH="$pipelines_path/salmon/salmon-1.4.0/bin:$PATH"
+        export PATH="$path/pipelines/salmon/salmon-1.4.0/bin:$PATH"
         salmon index -k 19 -t $output_folder_index/EGFP-decoys/gentrome.fa.gz -d $output_folder_index/EGFP-decoys/decoys.txt -i $output_folder_index/EGFP-decoys/index_k19 --gencode
     else
-        qsub-salmon-indexing.sh -w 15:00:00 -m 150gb -t $output_folder_index/EGFP-decoys/gentrome.fa.gz -d $output_folder_index/EGFP-decoys/decoys.txt -o $output_folder_index/EGFP-decoys -k 19 -p $pipelines_path/salmon/salmon-1.4.0 -args '--gencode'
+        qsub-salmon-indexing.sh -w 15:00:00 -m 150gb -t $output_folder_index/EGFP-decoys/gentrome.fa.gz -d $output_folder_index/EGFP-decoys/decoys.txt -o $output_folder_index/EGFP-decoys -k 19 -p $path/pipelines/salmon/salmon-1.4.0 -args '--gencode'
         pids_index_decoys_gfp_k19=$(qstat -u $USER | tail -n 1 | awk '{print $1}' | cut -d"." -f1)
     fi
 fi
@@ -227,21 +233,21 @@ fi
 
 for p in ${project_IDs[@]}
 do
-    $submit -w 03:00:00 -m 20gb -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/iric/sc/dsp$p/merged-fastqs -o $data_path/iric/sc/dsp$p/merged-fastqs -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+    $submit -w 03:00:00 -m 20gb -r $path/scripts/bash/quality/run-fastqc.sh -f $path/data/iric/sc/dsp$p/merged-fastqs -o $path/data/iric/sc/dsp$p/merged-fastqs -l "PE" -s "all" -p $path/pipelines/fastqc/FastQC-0.11.9 -d $
 
-    $submit -w 5:00:00 -m 10gb -r $scripts_path/bash/trimming/run-cutadapt.sh -f $data_path/iric/sc/dsp$p/merged-fastqs -o $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
-    -l "PE" -s "all" -p $pipelines_path/cutadapt/cutadapt-3.2 -savepids 1 \
+    $submit -w 5:00:00 -m 10gb -r $path/scripts/bash/trimming/run-cutadapt.sh -f $path/data/iric/sc/dsp$p/merged-fastqs -o $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
+    -l "PE" -s "all" -p $path/pipelines/cutadapt/cutadapt-3.2 -savepids 1 \
     -args '-m 20:20 -a CTGTCTCTTATACACATCTC;min_overlap=6 -A A{100};min_overlap=6 -A N{20}GTACTCTGCGTTGATACCACTGCTTCCGCGGACAGGCGTGTAGATCTCGGTGGTCGCCGTATCATT;min_overlap=26'
     
-    if [[ $torque = 1  && -s "~/tmp/qsub_pids/pids.txt" ]]
+    if [[ $torque = 1  && -s "/u/davidm/tmp/qsub_pids/pids.txt" ]]
     then
-        sample=$(cut -f1 -d ' ' ~/tmp/qsub_pids/pids.txt)
-        pid=$(cut -f2 -d ' ' ~/tmp/qsub_pids/pids.txt)
+        sample=$(cut -f1 -d ' ' /u/davidm/tmp/qsub_pids/pids.txt)
+        pid=$(cut -f2 -d ' ' /u/davidm/tmp/qsub_pids/pids.txt)
         declare "pids_trim_$p=$(echo $sample , $pid)"
     fi
     
     wait_pid="$(arrayGet pids_trim $p)"
-    $submit -w 03:00:00 -m 20gb -h "$wait_pid" -r $scripts_path/bash/quality/run-fastqc.sh -f $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt -o $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $pipelines_path/fastqc/FastQC-0.11.9
+    $submit -w 03:00:00 -m 20gb -h "$wait_pid" -r $path/scripts/bash/quality/run-fastqc.sh -f $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt -o $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt -l "PE" -s "all" -p $path/pipelines/fastqc/FastQC-0.11.9
 done
 
 
@@ -259,13 +265,12 @@ done
 for p in ${project_IDs[@]}
 do
     wait_pid="$(arrayGet pids_trim $p)"
-    $submit -w 00:30:00 -m 5gb -h "$wait_pid" -r $scripts_path/bash/whitelisting/get_cb_whitelist.sh -f $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
-    -o $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt  -s "all" -p $scripts_path/python/rnaseq/whitelisting.py -savepids 1 -args "--top=3000"
+    $submit -w 00:30:00 -m 5gb -h "$wait_pid" -r $path/scripts/bash/whitelisting/get_cb_whitelist.sh -f $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
+    -o $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt  -s "all" -p $path/scripts/python/rnaseq/whitelisting.py -savepids 1 -args "--top=3000"
     
-    if [[ $torque = 1 && -s "~/tmp/qsub_pids/pids.txt" ]]; then
-        sample=$(cut -f1 -d ' ' ~/tmp/qsub_pids/pids.txt)
-        pid=$(cut -f2 -d ' ' ~/tmp/qsub_pids/pids.txt)
-        echo $pid
+    if [[ $torque = 1 && -s "/u/davidm/tmp/qsub_pids/pids.txt" ]]; then
+        sample=$(cut -f1 -d ' ' /u/davidm/tmp/qsub_pids/pids.txt)
+        pid=$(cut -f2 -d ' ' /u/davidm/tmp/qsub_pids/pids.txt)
         declare "pids_wh_$p=$(echo $sample , $pid)"
     fi
 done
@@ -290,19 +295,18 @@ do
         wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_gfp_k19)"
         mapping_params="EGFP-decoys-k19-1.4.0"
         index="EGFP-decoys"
-        txp2gene="biomart_ens100/gencode.v34.EGFP_transcripts_txp2gene.tsv"
+        txp2gene="gencode.v34.EGFP_transcripts_txp2gene.tsv"
 
     else
         wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_k19)"
-        echo $wait_pid
         mapping_params="decoys-k19-1.4.0"
         index="decoys"
-        txp2gene="biomart_ens100/gencode.v34.transcripts_txp2gene.tsv"
+        txp2gene="gencode.v34.transcripts_txp2gene.tsv"
     fi
 
-    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $data_path/references/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --customWhitelist" # --writeMappings=mapping.sam
+    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $path/data/references/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --customWhitelist" # --writeMappings=mapping.sam
 
-    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $scripts_path/bash/quantification/run-alevin.sh -f $data_path/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
-    -o $data_path/iric/sc/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/${mapping_params}/customWh-top-3000 -l "PE" -s "all" -p $pipelines_path/salmon/salmon-1.4.0 -args "$args"
+    $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $path/scripts/bash/quantification/run-alevin.sh -f $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
+    -o $path/data/iric/sc/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/${mapping_params}/customWh-top-3000 -l "PE" -s "all" -p $path/pipelines/salmon/salmon-1.4.0 -args "$args"
 
 done
