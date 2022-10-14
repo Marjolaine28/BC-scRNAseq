@@ -52,6 +52,29 @@ do
 done
 
 
+
+####### GET SAMPLE NAME AND INPUT FOLDER #######
+
+IFS='/' read -ra sname <<< $input_r1
+sname=${sname[*]: -2:1}
+input_folder="$(dirname "${input_r1}")"
+
+
+
+
+####### DON'T OVERWRITE ANALYSIS #######
+
+if [[ -f $output_folder/$sname/alevin/quants_mat.gz ]]
+then 
+    echo "$output_folder/$sname/alevin/quants_mat.gz already exists.
+    
+    
+    "
+    exit 1
+fi
+    
+
+
 ####### EMPTY MODE TO ONLY CREATE EMPTY OUTPUT FILES AND FOLDERS -- useful for qsub-all-fastq.sh #######
 # No empty mode implemented ; not needed for now (no holding job waiting for it)
 
@@ -59,7 +82,7 @@ emp=${emp:-'0'}             # 0 by default
 
 if [[ $emp = 1 ]]
 then
-	exit 1
+	exit 0
 fi
 
 
@@ -71,26 +94,7 @@ then
 fi
 
 
-####### GET SAMPLE NAME #######
 
-IFS='/' read -ra sname <<< $input_r1
-sname=${sname[*]: -2:1}
-IFS='_' read -ra rname <<< $(basename $input_r1)
-rname=${rname[*]: 0:1}
-if [[ $sname != $rname ]] ; then sname=$sname/$rname; fi                                                    ### get sample name
-
-
-####### CHECK IF ANALYSIS WAS ALREADY PERFORMED #######
-
-if [[ -f $output_folder/$sname/alevin/quants_mat.gz ]]
-then 
-    echo "$output_folder/$sname/alevin/quants_mat.gz already exists.
-    
-    
-    "
-    exit 1
-fi
-    
 
 ####### CREATE LOG FILE #######
 
@@ -125,6 +129,19 @@ Run script    $(basename $0)    with args :
 ####### RUN ALEVIN #######
 
 input_r2=${input_r1/1.fastq/2.fastq}  	     			 ### get reads 2 files       
+
+for a in ${args[@]}
+do
+    if [[ "--customWhitelist" = $a ]]
+    then
+        args=( "${args[@]/$a}" )
+        args+=("--whitelist")
+        args+=("$input_folder/whitelist.tsv")
+    fi
+done
+
+echo ${args[@]}
+
 salmon alevin ${args[@]} -1 $input_r1 -2 $input_r2 -o $output_folder/$sname/
 
 

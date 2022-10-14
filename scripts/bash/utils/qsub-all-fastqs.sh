@@ -36,7 +36,7 @@ Script    $(basename $0)    must be run with args :
 
 -args : additional arguments to pass to the script, e.g. adapter sequence for cutadapt or index for alevin.
 
--savepids : if 1 stores the pids in /u/davidm/tmp (0 by default)
+-savepids : stores the pids in the path given (if savepids not passed as argument, pids are not stored)
 
 
 
@@ -170,8 +170,13 @@ Run script    $(basename $0)    with args :
 
 ####### SUBMIT JOBS #######
 
-run=$(basename $run_path)
-IFS=';' declare -a 'hold=($hold)'
+
+IFS=';'; hold=($hold);
+run=$(basename $run_path);
+
+echo ${hold[0]}
+echo ${hold[1]}
+
 
 for s in ${S[@]}                                                                                                            ### loop over the samples
 do
@@ -186,12 +191,14 @@ do
         continue
     fi
 
-    pids="";                                                                                                                ### get the different jobs to wait for
+    pids="";
+    IFS=';';                                                                                                     ### get the different jobs to wait for
     for h in ${hold[@]}; do
+        echo $h
         IFS=','; holdx=($h);                                                                                                ### get the different sample-specific jobs to wait for
         if [[ ${#holdx[@]} > 1 ]];                                                                                          ### case only more than one sample
         then 
-            IFS=' '; sx=(${holdx[0]}); pidx=(${holdx[1]});                                                                  ### get pid for the sample s
+            IFS=' '; sx=(${holdx[0]}); pidx=(${holdx[1]});                                                                  ### get pid for the samples
             for index in "${!sx[@]}"; do
                 if [[ ${sx[$index]} = $sname ]]
                 then
@@ -215,8 +222,9 @@ do
 
     fi
 
-    if [[ $savepids = 1 ]]
+    if [[ ! $savepids = 0 ]]
     then
-        echo $sname ${pid_job} $run_path >> /u/davidm/tmp/qsub_pids/pids.txt
+        mkdir -p $savepids
+        echo $sname ${pid_job} $run_path >> $savepids/pids.txt
     fi
 done
