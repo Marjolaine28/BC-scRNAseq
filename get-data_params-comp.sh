@@ -194,23 +194,23 @@ done
 
 
 
-# Indexing without decoys (k19) #
+# Indexing without decoys (k31) #
 #################################
 
 
-if [[ -d $output_folder_index/no-decoys/index_k19 ]] 
+if [[ -d $output_folder_index/no-decoys/index_k31 ]] 
 then
-    echo "no-decoys/index_k19 already generated.
+    echo "no-decoys/index_k31 already generated.
     
     "
 else
     if [[ $torque = 0 ]]
     then
         export PATH="$path/pipelines/salmon/salmon-1.4.0/bin:$PATH"
-        salmon index -k 19 -t $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -i $output_folder_index/no-decoys/index_k19 --gencode
+        salmon index -k 31 -t $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -i $output_folder_index/no-decoys/index_k31 --gencode
     else
-        qsub-salmon-indexing.sh -w 1:00:00 -m 10gb -t $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/no-decoys -k 19 -p $path/pipelines/salmon/salmon-1.4.0 -args '--gencode'
-        pids_index_no_decoys_k19=$(qstat -u $USER | tail -n 1 | awk '{print $1}' | cut -d"." -f1)
+        qsub-salmon-indexing.sh -w 1:00:00 -m 10gb -t $path/data/references/$assembly/$annot/gencode.v34.transcripts.fa.gz -o $output_folder_index/no-decoys -k 31 -p $path/pipelines/salmon/salmon-1.4.0 -args '--gencode'
+        pids_index_no_decoys_k31=$(qstat -u $USER | tail -n 1 | awk '{print $1}' | cut -d"." -f1)
     fi
 fi
 
@@ -303,20 +303,20 @@ do
 
     if [[ $p = 1090 ]]
     then
-        wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_gfp_k19)"
+        wait_pid="$(arrayGet pids_trim $p) ; $(arrayGet pids_index  decoys_gfp_k19)"
         mapping_params="EGFP-decoys-k19-1.4.0"
         index="EGFP-decoys"
         txp2gene="gencode.v34.EGFP_transcripts_txp2gene.tsv"
 
     else
-        wait_pid="$(arrayGet pids_wh $p) ; $(arrayGet pids_index  decoys_k19)" 
+        wait_pid="$(arrayGet pids_trim $p) ; $(arrayGet pids_index  decoys_k19)" 
         mapping_params="decoys-k19-1.4.0"
         index="decoys"
         txp2gene="gencode.v34.transcripts_txp2gene.tsv"
     fi
 
 
-    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $path/data/references/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --mrna $path/data/references/$assembly/$annot/mt_genes_biomart_ens100.tsv --rrna $path/data/references/$assembly/$annot/rRNA_genes_biomart_ens100.tsv"
+    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $path/data/references/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --mrna $path/data/references/$assembly/$annot/biomart_ens100/mt_genes_biomart_ens100.tsv --rrna $path/data/references/$assembly/$annot/biomart_ens100/rRNA_genes_biomart_ens100.tsv"
 
     $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $path/scripts/bash/quantification/run-alevin.sh -f $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
     -o $path/data/iric/sc/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/${mapping_params}/default -l "PE" -s "all" -p $path/pipelines/salmon/salmon-1.4.0 -args "$args"
@@ -363,13 +363,13 @@ done
 
 
 
-# No decoys, k19 & forceCells 3000 #
+# No decoys, k31 & forceCells 3000 #
 ####################################
 
-pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index  no_decoys_k19)"
+pid="$(arrayGet pids_trim 779) ; $(arrayGet pids_index  no_decoys_k31)"
 $submit -w 6:00:00 -m 50gb -h "$pid" -r $path/scripts/bash/quantification/run-alevin.sh -f $path/data/iric/sc/dsp779/trimmed-fastqs/cutadapt \
--o $path/data/iric/sc/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/no-decoys-k19-1.4.0/forceCells-3000 -l "PE" -s "all" -p $path/pipelines/salmon/salmon-1.4.0 \
--args "-l ISR -i $output_folder_index/no-decoys/index_k19 --tgMap $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv \
+-o $path/data/iric/sc/dsp779/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/no-decoys-k31-1.4.0/forceCells-3000 -l "PE" -s "all" -p $path/pipelines/salmon/salmon-1.4.0 \
+-args "-l ISR -i $output_folder_index/no-decoys/index_k31 --tgMap $path/data/references/$assembly/$annot/gencode.v34.transcripts_txp2gene.tsv \
 --dropseq --dumpMtx --dumpFeatures --forceCells 3000"
 
 
@@ -417,9 +417,6 @@ do
     -args "-l ISR -i $output_folder_index/$index/index_k19 --tgMap $path/data/references/$assembly/$annot/$txp2gene \
     --dropseq --dumpMtx --dumpFeatures --forceCells 3000"
 done
-
-
-
 
 
 

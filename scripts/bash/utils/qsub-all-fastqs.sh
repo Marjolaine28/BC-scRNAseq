@@ -94,10 +94,10 @@ savepids=${savepids:-'0'}
 
 ###### CONFIGURE TMP DIRCTORY #######
 
-mkdir -p /u/davidm/tmp/qsub_pids
-if [[ $savepids = 1 && -s /u/davidm/tmp/qsub_pids/pids.txt ]]
+mkdir -p $savepids
+if [[ -s $savepids/pids.txt ]]
 then
-    rm  /u/davidm/tmp/qsub_pids/pids.txt;
+    rm  $savepids/pids.txt;
 fi
 
 
