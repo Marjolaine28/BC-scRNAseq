@@ -236,7 +236,7 @@ do
     $submit -w 03:00:00 -m 20gb -r $path/scripts/bash/quality/run-fastqc.sh -f $path/data/iric/sc/dsp$p/merged-fastqs -o $path/data/iric/sc/dsp$p/merged-fastqs -l "PE" -s "all" -p $path/pipelines/fastqc/FastQC-0.11.9 -d $
 
     $submit -w 5:00:00 -m 10gb -r $path/scripts/bash/trimming/run-cutadapt.sh -f $path/data/iric/sc/dsp$p/merged-fastqs -o $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
-    -l "PE" -s "all" -p $path/pipelines/cutadapt/cutadapt-3.2 -savepids 1 \
+    -l "PE" -s "all" -p $path/pipelines/cutadapt/cutadapt-3.2 -savepids $path/tmp/qsub_pids \
     -args '-m 20:20 -a CTGTCTCTTATACACATCTC;min_overlap=6 -A A{100};min_overlap=6 -A N{20}GTACTCTGCGTTGATACCACTGCTTCCGCGGACAGGCGTGTAGATCTCGGTGGTCGCCGTATCATT;min_overlap=26'
     
     if [[ $torque = 1  && -s "/u/davidm/tmp/qsub_pids/pids.txt" ]]
@@ -266,7 +266,7 @@ for p in ${project_IDs[@]}
 do
     wait_pid="$(arrayGet pids_trim $p)"
     $submit -w 00:30:00 -m 5gb -h "$wait_pid" -r $path/scripts/bash/whitelisting/get_cb_whitelist.sh -f $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
-    -o $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt  -s "all" -p $path/scripts/python/rnaseq/whitelisting.py -savepids 1 -args "--top=3000"
+    -o $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt  -s "all" -p $path/scripts/python/rnaseq/whitelisting.py -savepids $path/tmp/qsub_pids -args "--top=3000"
     
     if [[ $torque = 1 && -s "/u/davidm/tmp/qsub_pids/pids.txt" ]]; then
         sample=$(cut -f1 -d ' ' /u/davidm/tmp/qsub_pids/pids.txt)
