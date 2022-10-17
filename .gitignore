@@ -1,3 +1,4 @@
 data
+tmp
 pipelines/*
 !pipelines/requirements.txt
