@@ -1,5 +1,3 @@
-# Workflow
-
 ## Installation
 
 To install the pipelines versions used in this project, run the following command :
@@ -14,38 +12,24 @@ NOTE 2 : All folders containg heavy files, such as references, pipelines or data
 
 
 
-## Preproccessing
+## Get data
 
-### Get count matrices
+To get the count matrices I used for the exploration and analysis of the scRNA-seq datasets (final workflow), you can run the following command :
 
-#### All steps in one script
-
-To get the count matrices I used for the exploration and analysis presented in the notebooks, you can run the following command :
-
-nohup ./get-data.sh __torque__ __key__ ./logs/nohup_get-data.out < /dev/null &
+nohup ./get-data_sc-workflow.sh __torque__ __key__ ./logs/nohup_get-data.out < /dev/null &
 
 __Key__ is the identification that allows you acces to the data, you can find it in the URL that the genomic platform provides you to download your data (something like "https://genomique.iric.ca/FastQList?key=__the-key-you-want__&projectID=XXX&wget=1". __Torque__ is a ressource manager, if you use a compute cluster on witch it is installed, pass the value 1 otherwise pass the value 0. For example :
 
 nohup ./get-data.sh __1__ __thisismykey__ ./logs/nohup_get-data.out < /dev/null &
 
 
-#### Detailled steps
+To get the count matrices I used for Alevin parameters comparison (different k-mer sizes, etc.), you can run the following command :
 
-The script get-data.sh menionned above wraps differents steps of the preprocessing workflow, that you might want to run separatly. Those steps are detailled below.
-
-##### Get references
-##### Download the raw FASTQ files
-##### Trimming
-##### FASTQC
-##### Whitelisting
-##### Run Alevin
-
-### Normalization
+nohup ./get-data_sc-workflow.sh __torque__ __key__ ./logs/nohup_get-data.out < /dev/null &
 
 
-### How to choose parameters ?
+To get the count matrices (scRNA-seq as well as bulk RNA-seq datasets) I used for sanity check of the samples (IGV, correlations ...), you can run the following command :
 
-
-## Exploraory analysis
+nohup ./get-data_sc-workflow.sh __torque__ __key__ ./logs/nohup_get-data.out < /dev/null &
 
 
