@@ -17,7 +17,7 @@ def read_raw(data_path : str = "/home/arion/davidm/Data/datasets/raw/private/RNA
 	quant_tool : str = "alevin", genref : str = "human/assembly__GRCh38-hg38/annotation__gencode/gencode_34", quant_params : str = '', \
 	samples : Union[list, str, None] = None, layer : str = "raw", shuffle_samples = True, **kwargs) :
 	
-	path = f"{data_path}/{exp}/{project_id}/quant/{quant_tool}/{genref}/{quant_params}"
+	path = f"{data_path}/{exp}/{project_id}/quant/{quant_tool}/{genref}/{quant_params}/raw-counts"
 	print(path)	
 	X = []
 	S = []

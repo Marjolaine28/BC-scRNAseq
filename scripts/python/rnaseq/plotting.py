@@ -13,9 +13,9 @@ def scatter(x, y, color : Union[str, None] = None, color_title : Union[str, None
     s : Union[list, int] = 2, marker : Union[list, str] = 'o', order_marker : Union[dict, None] = None, linewidth : Union[list, float] = 0.5, **kwargs) :
         
     if subplots is None :
-        fig, ax = plt.subplots(figsize = figsize)
+        fig, _ = plt.subplots(figsize = figsize)
     else :
-        fig, ax = subplots
+        fig, _ = subplots
     if xlim is not None :
         plt.xlim(xlim)
     if ylim is not None :

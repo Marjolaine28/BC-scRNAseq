@@ -40,11 +40,13 @@ then
     wget https://github.com/samtools/samtools/releases/download/1.16/samtools-1.16.tar.bz2 -P $(git root)/pipelines/samtools
     tar -vxjf $(git root)/pipelines/samtools/samtools-1.16.tar.bz2 -C $(git root)/pipelines/samtools
     rm $(git root)/pipelines/samtools/samtools-1.16.tar.bz2
+    make -C $(git root)/pipelines/samtools/samtools-1.16
 
     ## STAR
     wget https://github.com/alexdobin/STAR/archive/2.7.10a.tar.gz -P $(git root)/pipelines/star
     tar -xzf $(git root)/pipelines/star/2.7.10a.tar.gz -C $(git root)/pipelines/star
     rm $(git root)/pipelines/star/2.7.10a.tar.gz
+    make -C $(git root)/pipelines/star/STAR-2.7.10a/source
 
     ## RSEM
     wget https://github.com/deweylab/RSEM/archive/refs/tags/v1.3.3.tar.gz -P $(git root)/pipelines/rsem

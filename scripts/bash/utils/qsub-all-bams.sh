@@ -26,7 +26,7 @@ Script    $(basename $0)    must be run with args :
 
 -p : path to the pipeline called in the script, e.g. /home/arion/davidm/Sofwares/cutadapt/cutadapt-3.2
 
--f : input_path = path to the files to process, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/raw
+-f : input_path = path to the bam file to process, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/raw
 
 -o : output_path = path where you want to store output, e.g. /home/arion/davidm/Data/datasets/private/RNA-seq/sc/sc-MCF7_DSP779/trimmed
 
@@ -37,8 +37,6 @@ Script    $(basename $0)    must be run with args :
 -args : additional arguments to pass to the script, e.g. adapter sequence for cutadapt or index for alevin.
 
 -savepids : stores the pids in the path given (if savepids not passed as argument, pids are not stored)
-
-
 
 
 
@@ -59,10 +57,9 @@ do
         -m) mem="$1"; shift;;            
         -h) hold="$1"; shift;;
 	    -r) run_path="$1"; shift;;  
-        -p) pipeline="$1"; shift;;
+        -p) pipeline="$1"; shift;;         
         -f) input_path="$1"; shift;;            
         -o) output_path="$1"; shift;;
-    	-l) lib="$1"; shift;;
         -s) samples="$1"; IFS=' ' declare -a 'samples=($samples)'; shift;;
         -args) args="$1"; shift;;
         -savepids) savepids="$1"; shift;;
@@ -110,20 +107,14 @@ fi
 
 ####### CACLCULATE TOTAL NUMBER OF SAMPLES (INCLUDING REPLICATES) THAT WILL BE PROCESSED #######
 
-if [[ $samples = 'all' ]]; then
-    if [[ $lib = SE ]]; then
-        S=($(find $input_path -name "*.fastq*"))
-    else
-        S=($(find $input_path -name "*R1.fastq*"))
-    fi
+if [[ $samples = 'all' ]]
+then
+    S=($(find $input_path -maxdepth 2 -name "*.bam"))
 else
     S=()
-    for s in ${samples[@]}; do
-        if [[ $lib = SE ]]; then
-                rep=($(find $input_path/$s/ -name "*.fastq*"))
-        else
-                rep=($(find $input_path/$s/ -name "*R1.fastq*"))
-        fi
+    for s in ${samples[@]};
+    do
+        rep=($(find $input_path/$s/ -maxdepth 1 -name "*.bam"))
         S=(${S[@]} $rep)
     done
 fi
@@ -177,6 +168,9 @@ Run script    $(basename $0)    with args :
 IFS=';'; hold=($hold);
 run=$(basename $run_path);
 
+echo ${hold[0]}
+echo ${hold[1]}
+
 
 for s in ${S[@]}                                                                                                            ### loop over the samples
 do
@@ -194,6 +188,7 @@ do
     pids="";
     IFS=';';                                                                                                                ### get the different jobs to wait for
     for h in ${hold[@]}; do
+        echo $h
         IFS=','; holdx=($h);                                                                                                ### get the different sample-specific jobs to wait for
         if [[ ${#holdx[@]} > 1 ]];                                                                                          ### case only more than one sample
         then 

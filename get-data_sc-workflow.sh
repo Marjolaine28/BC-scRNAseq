@@ -47,9 +47,8 @@ arrayGet() {
 ############################## DOWNLOAD IRIC FASTQS ##############################  
 ##################################################################################
 
-# project_IDs=(762 779 992 1090)
 
-project_IDs=(992)
+project_IDs=(762 779 992 1090)
 
 
 
@@ -62,9 +61,6 @@ for p in ${project_IDs[@]}; do
     fi
     merge-fastq-iric.sh $path/data/iric/sc/dsp$p/downloaded-fastqs $path/data/iric/sc/dsp$p/merged-fastqs
 done
-
-
-
 
 
 
@@ -268,9 +264,9 @@ do
     $submit -w 00:30:00 -m 5gb -h "$wait_pid" -r $path/scripts/bash/whitelisting/get_cb_whitelist.sh -f $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
     -o $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt  -s "all" -p $path/scripts/python/rnaseq/whitelisting.py -savepids $path/tmp/qsub_pids -args "--top=3000"
     
-    if [[ $torque = 1 && -s "/u/davidm/tmp/qsub_pids/pids.txt" ]]; then
-        sample=$(cut -f1 -d ' ' /u/davidm/tmp/qsub_pids/pids.txt)
-        pid=$(cut -f2 -d ' ' /u/davidm/tmp/qsub_pids/pids.txt)
+    if [[ $torque = 1 && -s "$path/tmp/qsub_pids/pids.txt" ]]; then
+        sample=$(cut -f1 -d ' ' $path/tmp/qsub_pids/pids.txt)
+        pid=$(cut -f2 -d ' ' $path/tmp/qsub_pids/pids.txt)
         declare "pids_wh_$p=$(echo $sample , $pid)"
     fi
 done
@@ -304,9 +300,9 @@ do
         txp2gene="gencode.v34.transcripts_txp2gene.tsv"
     fi
 
-    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $path/data/references/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --customWhitelist" # --writeMappings=mapping.sam
+    args="-l ISR -i $output_folder_index/$index/index_k19 --tgMap $path/data/references/$assembly/$annot/$txp2gene --dropseq --dumpMtx --dumpFeatures --customWhitelist"
 
     $submit -w 6:00:00 -m 60gb -h "$wait_pid" -r $path/scripts/bash/quantification/run-alevin.sh -f $path/data/iric/sc/dsp$p/trimmed-fastqs/cutadapt \
-    -o $path/data/iric/sc/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/${mapping_params}/customWh-top-3000 -l "PE" -s "all" -p $path/pipelines/salmon/salmon-1.4.0 -args "$args"
+    -o $path/data/iric/sc/dsp$p/quant/alevin/$assembly/$annot/trimmed-reads-cutadapt/${mapping_params}/customWh-top-3000/raw-counts -l "PE" -s "all" -p $path/pipelines/salmon/salmon-1.4.0 -args "$args"
 
 done
